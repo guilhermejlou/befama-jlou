@@ -7,256 +7,149 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0a0f;
-    --surface: #111118;
-    --surface2: #1a1a24;
-    --accent: #7c6dfa;
-    --accent2: #fa6d8c;
-    --accent3: #6dfad4;
-    --text: #f0f0f8;
-    --muted: #7a7a99;
-    --border: rgba(124,109,250,0.15);
-    --card-bg: rgba(26,26,36,0.9);
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root{--bg:#0a0a0f;--s2:#1a1a24;--acc:#7c6dfa;--acc2:#fa6d8c;--acc3:#6dfad4;--text:#f0f0f8;--muted:#7a7a99;--bdr:rgba(124,109,250,0.15);--card:rgba(26,26,36,0.9)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.7}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(124,109,250,0.03)1px,transparent 1px),linear-gradient(90deg,rgba(124,109,250,0.03)1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
+.orb{position:fixed;border-radius:50%;filter:blur(140px);pointer-events:none;z-index:0;opacity:.18}
+.orb1{width:600px;height:600px;background:var(--acc);top:-200px;right:-200px}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,15,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--bdr)}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.4rem;letter-spacing:-.03em;background:linear-gradient(135deg,var(--acc),var(--acc2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.back-link{color:var(--muted);text-decoration:none;font-size:.875rem;display:flex;align-items:center;gap:.4rem;transition:color .2s}
+.back-link:hover{color:var(--text)}
+.pgbar-wrap{position:fixed;top:64px;left:0;right:0;z-index:99;height:2px;background:rgba(124,109,250,.1)}
+.pgbar{height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));width:0;transition:width .1s}
+.page{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:7rem 2rem 6rem}
+.aula-header{margin-bottom:4rem}
+.breadcrumb{font-size:.78rem;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:1.2rem}
+.breadcrumb span{color:var(--acc)}
+.aula-header h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,5vw,3.5rem);font-weight:800;letter-spacing:-.04em;line-height:1.05;margin-bottom:1rem}
+.aula-meta{display:flex;gap:1.5rem;flex-wrap:wrap}
+.meta-item{display:flex;align-items:center;gap:.4rem;font-size:.85rem;color:var(--muted)}
+.bloco{margin-bottom:3.5rem}
+.bloco-label{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);margin-bottom:.5rem}
+.bloco h2{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:700;letter-spacing:-.03em;margin-bottom:1.25rem}
+.bloco h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:-.02em;margin-bottom:.6rem;margin-top:1.5rem}
+p{font-size:1rem;color:rgba(240,240,248,.85);margin-bottom:1rem}
+.def{background:rgba(124,109,250,.07);border-left:3px solid var(--acc);border-radius:0 12px 12px 0;padding:1.25rem 1.5rem;margin:1.25rem 0}
+.def .def-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--acc);margin-bottom:.5rem}
+.def p{color:var(--text);margin:0;font-size:1rem}
+.prop-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:1rem 0}
+.prop{background:var(--s2);border:1px solid var(--bdr);border-radius:12px;padding:.9rem 1rem}
+.prop .prop-label{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem}
+.prop .prop-val{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}
+.tip{background:rgba(109,250,212,.06);border-left:3px solid var(--acc3);border-radius:0 12px 12px 0;padding:.9rem 1.25rem;margin:1rem 0;font-size:.9rem;color:rgba(109,250,212,.9)}
+.warn{background:rgba(250,109,140,.06);border-left:3px solid var(--acc2);border-radius:0 12px 12px 0;padding:.9rem 1.25rem;margin:1rem 0;font-size:.9rem;color:rgba(250,180,190,.9)}
+.exemplos{list-style:none;counter-reset:ex;margin:1rem 0}
+.exemplos li{counter-increment:ex;display:flex;gap:1rem;padding:.7rem 0;border-bottom:1px solid rgba(124,109,250,.08);font-size:.95rem}
+.exemplos li::before{content:counter(ex,lower-alpha)')';color:var(--acc);font-weight:500;min-width:20px}
+/* GRAPHS */
+.graph-wrap{position:relative;width:100%;margin:1rem 0}
+.graph-wrap canvas{display:block;width:100%;aspect-ratio:1/1;border-radius:16px;background:rgba(26,26,36,.7);border:1px solid var(--bdr)}
+.ctrl{display:flex;align-items:center;gap:1rem;margin:.75rem 0;flex-wrap:wrap}
+.ctrl label{font-size:.85rem;color:var(--muted);min-width:60px}
+.ctrl input[type=range]{flex:1;accent-color:var(--acc);min-width:100px}
+.ctrl .val{font-family:'Syne',sans-serif;font-weight:700;color:var(--acc);min-width:36px;text-align:right}
+.checkboxes{display:flex;gap:1.5rem;flex-wrap:wrap;margin:.5rem 0 .75rem}
+.checkboxes label{display:flex;align-items:center;gap:.5rem;font-size:.85rem;color:var(--muted);cursor:pointer}
+.checkboxes input{accent-color:var(--acc)}
+.legend-line{display:inline-block;width:18px;height:2.5px;vertical-align:middle;border-radius:2px}
+.sep{border:none;border-top:1px solid var(--bdr);margin:3.5rem 0}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-    line-height: 1.7;
-  }
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image:
-      linear-gradient(rgba(124,109,250,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(124,109,250,0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none; z-index: 0;
-  }
-  .orb { position: fixed; border-radius: 50%; filter: blur(140px); pointer-events: none; z-index: 0; opacity: 0.18; }
-  .orb1 { width: 600px; height: 600px; background: var(--accent); top: -200px; right: -200px; }
+/* ===== JUICE MACHINE ===== */
+.juice-game{background:var(--card);border:1px solid var(--bdr);border-radius:20px;padding:1.5rem;margin:1.5rem 0;overflow:hidden}
+.jg-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:1.25rem;display:flex;align-items:center;gap:.6rem}
+.jg-title span{font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:300;color:var(--muted)}
+.jg-arena{display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:start;min-height:280px}
+.jg-items{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.jg-item{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:.5rem .4rem;text-align:center;cursor:pointer;transition:all .2s;user-select:none}
+.jg-item:hover{border-color:rgba(124,109,250,.4);background:rgba(124,109,250,.08);transform:translateY(-2px)}
+.jg-item.selected{border-color:var(--acc);background:rgba(124,109,250,.15)}
+.jg-item .ji-emoji{font-size:1.6rem;line-height:1;display:block;margin-bottom:.2rem}
+.jg-item .ji-name{font-size:.62rem;color:var(--muted);line-height:1.2}
+.jg-item .ji-dot{width:6px;height:6px;border-radius:50%;margin:.3rem auto 0;display:block}
 
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    padding: 1.2rem 2rem;
-    display: flex; align-items: center; justify-content: space-between;
-    background: rgba(10,10,15,0.85); backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border);
-  }
-  .logo { font-family:'Syne',sans-serif; font-weight:800; font-size:1.4rem; letter-spacing:-0.03em;
-    background: linear-gradient(135deg,var(--accent),var(--accent2));
-    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; text-decoration:none; }
-  .back-link { color:var(--muted); text-decoration:none; font-size:0.875rem; display:flex; align-items:center; gap:0.4rem; transition:color 0.2s; }
-  .back-link:hover { color:var(--text); }
+/* Machine SVG area */
+.jg-machine-wrap{display:flex;flex-direction:column;align-items:center;gap:.5rem;padding-top:.5rem}
+.machine-svg{width:90px;flex-shrink:0}
+.machine-arrow{font-size:1.2rem;color:var(--muted);transition:color .3s}
+.machine-arrow.active{color:var(--acc3)}
 
-  /* PROGRESS BAR */
-  .progress-bar-wrap { position: fixed; top: 64px; left: 0; right: 0; z-index: 99; height: 2px; background: rgba(124,109,250,0.1); }
-  .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); width: 0%; transition: width 0.1s; }
+/* Glass area */
+.jg-output{display:flex;flex-direction:column;align-items:center;gap:.75rem}
+.glass-wrap{position:relative;width:70px;height:110px}
+.glass-svg{width:70px;height:110px}
+.jg-result{font-size:.75rem;text-align:center;line-height:1.4;color:var(--muted);max-width:120px;transition:all .3s}
+.jg-result.success{color:var(--acc3)}
+.jg-result.error{color:var(--acc2)}
 
-  /* LAYOUT */
-  .page-wrap { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 7rem 2rem 6rem; }
+/* machine spin animation */
+@keyframes machineSpin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+@keyframes juiceRise{0%{transform:scaleY(0);opacity:0}100%{transform:scaleY(1);opacity:1}}
+.gear-anim{transform-origin:50% 50%;animation:machineSpin .6s linear infinite}
+.gear-anim.stopped{animation-play-state:paused}
 
-  /* HEADER */
-  .aula-header { margin-bottom: 4rem; }
-  .breadcrumb { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 1.2rem; }
-  .breadcrumb span { color: var(--accent); }
-  .aula-header h1 {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(2.2rem, 5vw, 3.5rem);
-    font-weight: 800;
-    letter-spacing: -0.04em; line-height: 1.05; margin-bottom: 1rem;
-  }
-  .aula-meta { display: flex; gap: 1.5rem; flex-wrap: wrap; }
-  .meta-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: var(--muted); }
-
-  /* BLOCOS DE CONTEÚDO */
-  .bloco { margin-bottom: 3.5rem; }
-  .bloco-label { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
-  .bloco h2 { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 1.25rem; }
-  .bloco h3 { font-family: 'Syne', sans-serif; font-size: 1.15rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.75rem; margin-top: 1.5rem; }
-  p { font-size: 1rem; color: rgba(240,240,248,0.85); margin-bottom: 1rem; }
-
-  /* DEFINITION BOX */
-  .def {
-    background: rgba(124,109,250,0.07);
-    border-left: 3px solid var(--accent);
-    border-radius: 0 12px 12px 0;
-    padding: 1.25rem 1.5rem;
-    margin: 1.25rem 0;
-  }
-  .def .def-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.5rem; }
-  .def p { color: var(--text); margin: 0; font-size: 1rem; }
-
-  /* FORMULA BOX */
-  .formula {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 1rem 1.5rem;
-    font-family: 'Syne', sans-serif;
-    font-size: 1.3rem;
-    font-weight: 700;
-    text-align: center;
-    letter-spacing: -0.02em;
-    margin: 1rem 0;
-    color: var(--text);
-  }
-
-  /* PROP GRID */
-  .prop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 1rem 0; }
-  .prop { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 0.9rem 1rem; }
-  .prop .prop-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.4rem; }
-  .prop .prop-val { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; }
-
-  /* TIP / WARN */
-  .tip { background: rgba(109,250,212,0.06); border-left: 3px solid var(--accent3); border-radius: 0 12px 12px 0; padding: 0.9rem 1.25rem; margin: 1rem 0; font-size: 0.9rem; color: rgba(109,250,212,0.9); }
-  .warn { background: rgba(250,109,140,0.06); border-left: 3px solid var(--accent2); border-radius: 0 12px 12px 0; padding: 0.9rem 1.25rem; margin: 1rem 0; font-size: 0.9rem; color: rgba(250,180,190,0.9); }
-
-  /* EXEMPLOS */
-  .exemplos { list-style: none; counter-reset: ex; margin: 1rem 0; }
-  .exemplos li { counter-increment: ex; display: flex; gap: 1rem; padding: 0.7rem 0; border-bottom: 1px solid rgba(124,109,250,0.08); font-size: 0.95rem; }
-  .exemplos li::before { content: counter(ex,lower-alpha)')'; color: var(--accent); font-weight: 500; min-width: 20px; }
-
-  /* GRAPHS */
-  .graph-area { position: relative; width: 100%; }
-  .chart-wrap { position: relative; width: 100%; height: 260px; }
-  .ctrl { display: flex; align-items: center; gap: 1rem; margin: 1rem 0; flex-wrap: wrap; }
-  .ctrl label { font-size: 0.85rem; color: var(--muted); min-width: 60px; }
-  .ctrl input[type=range] { flex: 1; accent-color: var(--accent); min-width: 120px; }
-  .ctrl .val { font-family: 'Syne', sans-serif; font-weight: 700; color: var(--accent); min-width: 36px; text-align: right; }
-  .checkboxes { display: flex; gap: 1.5rem; flex-wrap: wrap; margin: 0.5rem 0 1rem; }
-  .checkboxes label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--muted); cursor: pointer; }
-  .checkboxes input { accent-color: var(--accent); }
-
-  /* SEPARADOR */
-  .sep { border: none; border-top: 1px solid var(--border); margin: 3.5rem 0; }
-
-  /* EXERCÍCIOS */
-  .exer-header {
-    display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;
-  }
-  .exer-badge {
-    background: linear-gradient(135deg,var(--accent),var(--accent2));
-    border-radius: 100px; padding: 0.3rem 1rem;
-    font-size: 0.75rem; font-weight: 500; color: #fff; white-space: nowrap;
-  }
-  .exer-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 1.75rem;
-    margin-bottom: 1.25rem;
-    transition: border-color 0.2s;
-  }
-  .exer-card:hover { border-color: rgba(124,109,250,0.35); }
-  .exer-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
-  .exer-origem {
-    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em;
-    background: rgba(124,109,250,0.12); color: var(--accent);
-    border: 1px solid rgba(124,109,250,0.2); border-radius: 100px;
-    padding: 0.25rem 0.75rem; white-space: nowrap;
-  }
-  .exer-num { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; color: rgba(124,109,250,0.25); }
-  .exer-enunciado { font-size: 0.95rem; color: rgba(240,240,248,0.85); line-height: 1.65; margin-bottom: 1.25rem; }
-  .alternativas { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
-  .alternativas li {
-    padding: 0.6rem 1rem;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    font-size: 0.9rem; cursor: pointer;
-    transition: background 0.15s, border-color 0.15s;
-    display: flex; gap: 0.75rem;
-  }
-  .alternativas li span.letra { font-weight: 700; color: var(--muted); min-width: 18px; }
-  .alternativas li:hover { background: rgba(124,109,250,0.08); border-color: rgba(124,109,250,0.3); }
-  .alternativas li.correta { background: rgba(109,250,212,0.1); border-color: rgba(109,250,212,0.35); }
-  .alternativas li.errada { background: rgba(250,109,140,0.08); border-color: rgba(250,109,140,0.25); }
-  .alternativas li.correta span.letra { color: var(--accent3); }
-  .alternativas li.errada span.letra { color: var(--accent2); }
-  .gabarito-btn {
-    margin-top: 1rem;
-    background: transparent; border: 1px solid var(--border);
-    border-radius: 100px; padding: 0.4rem 1rem;
-    font-size: 0.8rem; color: var(--muted); cursor: pointer;
-    transition: background 0.15s, color 0.15s;
-  }
-  .gabarito-btn:hover { background: rgba(124,109,250,0.1); color: var(--accent); border-color: rgba(124,109,250,0.3); }
-  .gabarito-area {
-    display: none; margin-top: 1rem;
-    background: rgba(109,250,212,0.06); border-left: 3px solid var(--accent3);
-    border-radius: 0 12px 12px 0; padding: 1rem 1.25rem;
-    font-size: 0.875rem; color: rgba(109,250,212,0.9);
-  }
-  .gabarito-area.show { display: block; }
-
-  /* NAVEGAÇÃO FINAL */
-  .nav-final {
-    display: flex; gap: 1rem; margin-top: 4rem; flex-wrap: wrap;
-  }
-  .btn-final {
-    flex: 1; min-width: 150px;
-    padding: 0.9rem 1.5rem;
-    border-radius: 100px;
-    text-align: center; text-decoration: none; font-weight: 500; font-size: 0.9rem;
-    transition: transform 0.2s;
-  }
-  .btn-final:hover { transform: translateY(-2px); }
-  .btn-home { background: rgba(255,255,255,0.06); border: 1px solid var(--border); color: var(--muted); }
-  .btn-home:hover { color: var(--text); background: rgba(255,255,255,0.1); }
+/* EXERCISES */
+.exer-header{display:flex;align-items:center;gap:1rem;margin-bottom:2rem}
+.exer-badge{background:linear-gradient(135deg,var(--acc),var(--acc2));border-radius:100px;padding:.3rem 1rem;font-size:.75rem;font-weight:500;color:#fff;white-space:nowrap}
+.exer-card{background:var(--card);border:1px solid var(--bdr);border-radius:20px;padding:1.75rem;margin-bottom:1.25rem;transition:border-color .2s}
+.exer-card:hover{border-color:rgba(124,109,250,.35)}
+.exer-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:1rem}
+.exer-origem{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;background:rgba(124,109,250,.12);color:var(--acc);border:1px solid rgba(124,109,250,.2);border-radius:100px;padding:.25rem .75rem;white-space:nowrap}
+.exer-num{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:rgba(124,109,250,.25)}
+.exer-enunciado{font-size:.95rem;color:rgba(240,240,248,.85);line-height:1.65;margin-bottom:1.25rem}
+.alternativas{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.alternativas li{padding:.6rem 1rem;background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:10px;font-size:.9rem;cursor:pointer;transition:background .15s,border-color .15s;display:flex;gap:.75rem}
+.alternativas li span.letra{font-weight:700;color:var(--muted);min-width:18px}
+.alternativas li:hover{background:rgba(124,109,250,.08);border-color:rgba(124,109,250,.3)}
+.alternativas li.correta{background:rgba(109,250,212,.1);border-color:rgba(109,250,212,.35)}
+.alternativas li.errada{background:rgba(250,109,140,.08);border-color:rgba(250,109,140,.25)}
+.alternativas li.correta span.letra{color:var(--acc3)}
+.alternativas li.errada span.letra{color:var(--acc2)}
+.gabarito-btn{margin-top:1rem;background:transparent;border:1px solid var(--bdr);border-radius:100px;padding:.4rem 1rem;font-size:.8rem;color:var(--muted);cursor:pointer;transition:all .15s}
+.gabarito-btn:hover{background:rgba(124,109,250,.1);color:var(--acc);border-color:rgba(124,109,250,.3)}
+.gabarito-area{display:none;margin-top:1rem;background:rgba(109,250,212,.06);border-left:3px solid var(--acc3);border-radius:0 12px 12px 0;padding:1rem 1.25rem;font-size:.875rem;color:rgba(109,250,212,.9)}
+.gabarito-area.show{display:block}
+.nav-final{display:flex;gap:1rem;margin-top:4rem;flex-wrap:wrap}
+.btn-final{flex:1;min-width:150px;padding:.9rem 1.5rem;border-radius:100px;text-align:center;text-decoration:none;font-weight:500;font-size:.9rem;transition:transform .2s}
+.btn-final:hover{transform:translateY(-2px)}
+.btn-home{background:rgba(255,255,255,.06);border:1px solid var(--bdr);color:var(--muted)}
+.btn-home:hover{color:var(--text);background:rgba(255,255,255,.1)}
+@media(max-width:580px){.jg-arena{grid-template-columns:1fr;}.jg-machine-wrap{flex-direction:row;}.prop-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="orb orb1"></div>
-
 <nav>
-  <a href="/" class="logo">befama</a>
+  <a href="index.html" class="logo">befama</a>
   <a href="index.html" class="back-link">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
     Todas as aulas
   </a>
 </nav>
-<div class="progress-bar-wrap"><div class="progress-bar" id="pgbar"></div></div>
+<div class="pgbar-wrap"><div class="pgbar" id="pgbar"></div></div>
 
-<div class="page-wrap">
-
+<div class="page">
   <div class="aula-header">
     <div class="breadcrumb">Befama · <span>Aula 01</span></div>
     <h1>Funções Exponencial e Logarítmica</h1>
     <div class="aula-meta">
-      <span class="meta-item">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        50 min
-      </span>
-      <span class="meta-item">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
-        Potenciação · Logaritmo · Gráficos
-      </span>
-      <span class="meta-item">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-        4 exercícios de vestibular
-      </span>
+      <span class="meta-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>50 min</span>
+      <span class="meta-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>Potenciação · Domínio · Logaritmo · Gráficos</span>
+      <span class="meta-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>4 exercícios de vestibular</span>
     </div>
   </div>
 
-  <!-- BLOCO 1: POTENCIAÇÃO -->
+  <!-- B1: POTENCIAÇÃO -->
   <div class="bloco" id="b1">
     <div class="bloco-label">Fundamento</div>
     <h2>1. Potenciação</h2>
-    <p>Antes de entrar nas funções, precisamos dominar a linguagem por trás delas.</p>
-
+    <p>Antes de entrar nas funções, precisamos dominar a linguagem por trás de tudo.</p>
     <div class="def">
       <div class="def-label">Definição</div>
-      <p><strong>aⁿ = 1 × a × a × … × a</strong> (a multiplicado n vezes), onde a é a base e n é o expoente.</p>
-      <p style="margin-top:0.5rem; font-size:0.9rem; color:var(--muted);">O "1 na frente" mostra o ponto de partida: qualquer potência é uma multiplicação que parte de 1. Por isso a⁰ = 1 — multiplicamos zero vezes, e o que sobra é o 1 inicial.</p>
+      <p><strong>aⁿ = 1 × a × a × … × a</strong> &nbsp;(o "1" na frente, multiplicado por <em>a</em> exatamente <em>n</em> vezes)</p>
+      <p style="margin-top:.5rem;font-size:.9rem;color:var(--muted)">O 1 inicial deixa claro por que a⁰ = 1: quando multiplicamos zero vezes, só sobra o 1 de partida. Exemplo: 2³ = 1 × 2 × 2 × 2 = 8.</p>
     </div>
-
-    <p><strong>Exemplo:</strong> 2³ = 1 × 2 × 2 × 2 = 8</p>
-
     <h3>Propriedades essenciais</h3>
     <div class="prop-grid">
       <div class="prop"><div class="prop-label">Produto · mesma base</div><div class="prop-val">aᵐ · aⁿ = aᵐ⁺ⁿ</div></div>
@@ -266,389 +159,574 @@
       <div class="prop"><div class="prop-label">Expoente negativo</div><div class="prop-val">a⁻ⁿ = 1 / aⁿ</div></div>
       <div class="prop"><div class="prop-label">Expoente fracionário</div><div class="prop-val">a^(1/n) = ⁿ√a</div></div>
     </div>
-
-    <div class="tip">✦ Ativação: calcule 2¹⁰ dobrando o valor passo a passo — você vai chegar a 1024. Esse crescimento acelerado é exatamente o que veremos na função exponencial.</div>
+    <div class="tip">✦ Ativação: calcule 2¹⁰ dobrando o valor passo a passo → 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024. Esse crescimento acelerado é a essência da função exponencial.</div>
   </div>
 
   <hr class="sep">
 
-  <!-- BLOCO 2: FUNÇÃO EXPONENCIAL -->
+  <!-- B2: FUNÇÕES COMO MÁQUINAS (juice game) -->
   <div class="bloco" id="b2">
-    <div class="bloco-label">Função</div>
-    <h2>2. Função Exponencial</h2>
+    <div class="bloco-label">Conceito central</div>
+    <h2>2. Funções como máquinas</h2>
+    <p>Uma função é uma <strong>máquina</strong>: você coloca um valor de entrada (input), a máquina processa e devolve um valor de saída (output). Nem todo input é válido — o conjunto de entradas válidas se chama <strong>domínio</strong>.</p>
+
+    <div class="juice-game" id="juiceGame">
+      <div class="jg-title">
+        🧃 Máquina de sucos
+        <span>— clique em um ingrediente para processar</span>
+      </div>
+      <div class="jg-arena">
+        <!-- ITEMS -->
+        <div class="jg-items" id="jgItems"></div>
+
+        <!-- MACHINE -->
+        <div class="jg-machine-wrap">
+          <span class="machine-arrow" id="arrowLeft">→</span>
+          <svg class="machine-svg" viewBox="0 0 90 130" xmlns="http://www.w3.org/2000/svg">
+            <!-- funnel top -->
+            <polygon points="20,0 70,0 58,30 32,30" fill="#2a2a3a" stroke="rgba(124,109,250,.4)" stroke-width="1.5"/>
+            <!-- body -->
+            <rect x="18" y="30" width="54" height="60" rx="6" fill="#1a1a28" stroke="rgba(124,109,250,.35)" stroke-width="1.5"/>
+            <!-- screen -->
+            <rect x="25" y="38" width="40" height="24" rx="4" fill="#111120" stroke="rgba(124,109,250,.2)" stroke-width="1"/>
+            <!-- gear icon in screen -->
+            <g id="gearG" transform="translate(45,50)">
+              <circle r="7" fill="none" stroke="rgba(124,109,250,.5)" stroke-width="2"/>
+              <circle r="3" fill="rgba(124,109,250,.4)"/>
+              <g id="gearTeeth" stroke="rgba(124,109,250,.5)" stroke-width="2">
+                <line x1="0" y1="-11" x2="0" y2="-7"/>
+                <line x1="0" y1="7" x2="0" y2="11"/>
+                <line x1="-11" y1="0" x2="-7" y2="0"/>
+                <line x1="7" y1="0" x2="11" y2="0"/>
+                <line x1="-7.8" y1="-7.8" x2="-5" y2="-5"/>
+                <line x1="5" y1="5" x2="7.8" y2="7.8"/>
+                <line x1="7.8" y1="-7.8" x2="5" y2="-5"/>
+                <line x1="-5" y1="5" x2="-7.8" y2="7.8"/>
+              </g>
+            </g>
+            <!-- buttons -->
+            <circle cx="32" cy="73" r="4" fill="rgba(109,250,212,.3)" stroke="rgba(109,250,212,.5)" stroke-width="1"/>
+            <circle cx="45" cy="73" r="4" fill="rgba(124,109,250,.3)" stroke="rgba(124,109,250,.5)" stroke-width="1"/>
+            <circle cx="58" cy="73" r="4" fill="rgba(250,109,140,.3)" stroke="rgba(250,109,140,.5)" stroke-width="1"/>
+            <!-- spout -->
+            <rect x="38" y="90" width="14" height="18" rx="3" fill="#1a1a28" stroke="rgba(124,109,250,.3)" stroke-width="1.2"/>
+            <rect x="34" y="106" width="22" height="6" rx="3" fill="#111120" stroke="rgba(124,109,250,.25)" stroke-width="1"/>
+            <!-- liquid stream (hidden by default) -->
+            <rect id="liquidStream" x="41" y="108" width="8" height="22" rx="2" fill="#7c6dfa" opacity="0" transform-origin="45 108"/>
+          </svg>
+          <span class="machine-arrow" id="arrowRight">→</span>
+        </div>
+
+        <!-- GLASS OUTPUT -->
+        <div class="jg-output">
+          <svg class="glass-svg" viewBox="0 0 70 110" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <clipPath id="glassClip">
+                <polygon points="8,5 62,5 56,105 14,105"/>
+              </clipPath>
+            </defs>
+            <!-- glass body outline -->
+            <polygon points="8,5 62,5 56,105 14,105" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.2)" stroke-width="2"/>
+            <!-- juice fill (animated) -->
+            <g clip-path="url(#glassClip)">
+              <rect id="juiceFill" x="0" y="105" width="70" height="105" fill="#7c6dfa" opacity="0">
+                <animate id="juiceAnim" attributeName="y" from="105" to="30" dur="0.6s" begin="indefinite" fill="freeze"/>
+              </rect>
+            </g>
+            <!-- glass shine -->
+            <line x1="15" y1="10" x2="12" y2="100" stroke="rgba(255,255,255,.08)" stroke-width="2"/>
+            <!-- straw -->
+            <rect id="straw" x="48" y="8" width="4" height="70" rx="2" fill="rgba(109,250,212,0)" />
+            <line x1="50" y1="10" x2="50" y2="78" stroke="rgba(109,250,212,0)" stroke-width="4" stroke-linecap="round" id="strawLine"/>
+          </svg>
+          <div class="jg-result" id="jgResult">Selecione um ingrediente ←</div>
+        </div>
+      </div>
+
+      <!-- Domain explanation box (hidden, shown after interaction) -->
+      <div id="jgDomainBox" style="display:none;margin-top:1.25rem;padding:1rem 1.25rem;background:rgba(124,109,250,.07);border-left:3px solid var(--acc);border-radius:0 12px 12px 0;font-size:.875rem;color:rgba(240,240,248,.85)"></div>
+    </div>
 
     <div class="def">
+      <div class="def-label">Domínio e Imagem</div>
+      <p><strong>Domínio</strong> = conjunto de entradas válidas da função.<br>
+      <strong>Imagem</strong> = conjunto de saídas possíveis.</p>
+      <p style="margin-top:.5rem;font-size:.9rem;color:var(--muted)">Na máquina de sucos: frutas ∈ domínio (produzem resultado), vegetais ∉ domínio (geram erro).</p>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <!-- B3: FUNÇÃO EXPONENCIAL -->
+  <div class="bloco" id="b3">
+    <div class="bloco-label">Função</div>
+    <h2>3. Função Exponencial</h2>
+    <div class="def">
       <div class="def-label">Definição</div>
-      <p><strong>f(x) = aˣ</strong>, com a &gt; 0 e a ≠ 1</p>
-      <p style="margin-top:0.4rem; font-size:0.9rem; color:var(--muted);">Diferença fundamental: aqui o expoente é a variável x, e não um número fixo.</p>
+      <p><strong>f(x) = aˣ</strong>, com a > 0 e a ≠ 1</p>
+      <p style="margin-top:.4rem;font-size:.9rem;color:var(--muted)">O expoente é a variável — é isso que diferencia da potenciação comum.</p>
     </div>
-
-    <p>Explore como a base a muda o comportamento da função:</p>
-
     <div class="ctrl">
-      <label for="baseExp">Base a</label>
-      <input type="range" id="baseExp" min="0.2" max="4" step="0.1" value="2" oninput="updateExp()">
-      <span class="val" id="baseExpVal">2.0</span>
+      <label for="slExp">Base a</label>
+      <input type="range" id="slExp" min="0.2" max="4" step="0.1" value="2">
+      <span class="val" id="vlExp">2.0</span>
     </div>
-    <div id="expTip" class="tip">Base 2: função crescente. A curva se aproxima de zero quando x → −∞ mas nunca toca o eixo x (assíntota).</div>
-    <div class="graph-area">
-      <div class="chart-wrap"><canvas id="expChart" role="img" aria-label="Gráfico da função exponencial">Gráfico da função exponencial f(x) = aˣ.</canvas></div>
-    </div>
-
-    <div class="prop-grid" style="margin-top:1.25rem;">
-      <div class="prop"><div class="prop-label">Domínio</div><div class="prop-val">ℝ</div></div>
+    <div id="expTip" class="tip">Base 2 → crescente. A curva tende a 0 quando x→−∞ (assíntota horizontal y=0) mas nunca toca o eixo x.</div>
+    <div class="graph-wrap"><canvas id="cvExp" role="img" aria-label="Gráfico da função exponencial com escala 1:1"></canvas></div>
+    <div class="prop-grid" style="margin-top:1.25rem">
+      <div class="prop"><div class="prop-label">Domínio</div><div class="prop-val">ℝ (todos os reais)</div></div>
       <div class="prop"><div class="prop-label">Imagem</div><div class="prop-val">(0, +∞)</div></div>
       <div class="prop"><div class="prop-label">Ponto fixo</div><div class="prop-val">f(0) = 1 sempre</div></div>
       <div class="prop"><div class="prop-label">Assíntota</div><div class="prop-val">y = 0 (eixo x)</div></div>
     </div>
-    <div class="warn">⚠ Se a &lt; 1 (exemplo: 0,5) a função é decrescente — representa decaimento (radioatividade, resfriamento, depreciação).</div>
+    <div class="warn">⚠ Base entre 0 e 1 (ex: 0,5): função decrescente — representa decaimento (radioatividade, depreciação, resfriamento).</div>
   </div>
 
   <hr class="sep">
 
-  <!-- BLOCO 3: LOGARITMO -->
-  <div class="bloco" id="b3">
+  <!-- B4: LOGARITMO -->
+  <div class="bloco" id="b4">
     <div class="bloco-label">Inversa</div>
-    <h2>3. Logaritmo — a regra fundamental</h2>
-
+    <h2>4. Logaritmo — a regra fundamental</h2>
     <div class="def">
       <div class="def-label">Definição</div>
-      <p><strong>log<sub>b</sub> a = x ⟺ bˣ = a</strong></p>
-      <p style="margin-top:0.5rem; font-size:0.95rem;">O logaritmo de <em>a</em> na base <em>b</em> é o expoente <em>x</em> ao qual, na base <em>b</em>, resulta em <em>a</em>.</p>
+      <p><strong>log<sub>b</sub> a = x &nbsp;⟺&nbsp; bˣ = a</strong></p>
+      <p style="margin-top:.5rem;font-size:.95rem">O logaritmo de <em>a</em> na base <em>b</em> é o expoente <em>x</em> ao qual, na base <em>b</em>, resulta em <em>a</em>.</p>
     </div>
-
-    <div class="tip">✦ Analogia: se a potenciação pergunta "qual é o resultado?", o logaritmo pergunta "qual foi o expoente?"</div>
-
-    <p style="margin-top:0.5rem;">Condições de existência: <strong>a &gt; 0</strong>, <strong>b &gt; 0</strong> e <strong>b ≠ 1</strong></p>
-
+    <p style="font-size:.9rem;color:var(--muted)">Condições de existência: <strong>a > 0, b > 0, b ≠ 1</strong></p>
+    <div class="tip">✦ Se a potenciação pergunta "qual é o resultado?", o logaritmo pergunta "qual foi o expoente?"</div>
     <h3>Exemplos guiados</h3>
     <ul class="exemplos">
-      <li>log₂ 8 = 3, pois 2³ = 8</li>
-      <li>log₁₀ 1000 = 3, pois 10³ = 1000</li>
-      <li>log₅ 1 = 0, pois 5⁰ = 1</li>
-      <li>log₃ (1/9) = −2, pois 3⁻² = 1/9</li>
-      <li>log₄ 2 = 1/2, pois 4^(1/2) = √4 = 2</li>
+      <li>log₂ 8 = 3 &nbsp;← porque 2³ = 8</li>
+      <li>log₁₀ 1000 = 3 &nbsp;← porque 10³ = 1000</li>
+      <li>log₅ 1 = 0 &nbsp;← porque 5⁰ = 1</li>
+      <li>log₃ (1/9) = −2 &nbsp;← porque 3⁻² = 1/9</li>
+      <li>log₄ 2 = 1/2 &nbsp;← porque 4^(1/2) = √4 = 2</li>
     </ul>
-
     <h3>Calculadora interativa</h3>
-    <div class="ctrl" style="flex-wrap:wrap; gap:0.75rem; align-items:center;">
-      <span style="font-size:0.9rem;">log</span>
-      <select id="logBase" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 10px;color:var(--text);font-size:0.9rem;">
-        <option value="2">base 2</option>
-        <option value="10" selected>base 10</option>
-        <option value="e">base e (ln)</option>
-        <option value="3">base 3</option>
-        <option value="5">base 5</option>
+    <div class="ctrl" style="flex-wrap:wrap;gap:.75rem">
+      <span style="font-size:.9rem">log</span>
+      <select id="logBase" style="background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:6px 10px;color:var(--text);font-size:.9rem">
+        <option value="2">base 2</option><option value="10" selected>base 10</option>
+        <option value="e">base e (ln)</option><option value="3">base 3</option><option value="5">base 5</option>
       </select>
-      <span style="font-size:0.9rem;">de</span>
-      <input type="number" id="logNum" value="100" min="0.001" step="any" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 12px;color:var(--text);font-size:0.9rem;width:90px;">
-      <span style="font-size:0.9rem;">=</span>
-      <span id="logResult" style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.3rem;color:var(--accent3);">2.000</span>
+      <span style="font-size:.9rem">de</span>
+      <input type="number" id="logNum" value="100" min="0.001" step="any" style="background:var(--s2);border:1px solid var(--bdr);border-radius:8px;padding:6px 12px;color:var(--text);font-size:.9rem;width:90px">
+      <span style="font-size:.9rem">=</span>
+      <span id="logResult" style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.3rem;color:var(--acc3)">2.000</span>
     </div>
   </div>
 
   <hr class="sep">
 
-  <!-- BLOCO 4: PROPRIEDADES -->
-  <div class="bloco" id="b4">
-    <div class="bloco-label">Operações</div>
-    <h2>4. Propriedades dos logaritmos</h2>
-    <p>Cada propriedade abaixo vem diretamente das propriedades da potenciação — mostrar essa conexão é fundamental.</p>
-
-    <div class="prop" style="margin-bottom:0.75rem; padding:1rem 1.25rem;">
-      <div class="prop-label">1. Logaritmo do produto</div>
-      <div class="prop-val" style="font-size:1.1rem; margin:0.4rem 0;">log<sub>a</sub>(M · N) = log<sub>a</sub> M + log<sub>a</sub> N</div>
-      <p style="font-size:0.82rem; color:var(--muted); margin:0;">Ex: log₂(4 · 8) = log₂4 + log₂8 = 2 + 3 = 5</p>
-    </div>
-    <div class="prop" style="margin-bottom:0.75rem; padding:1rem 1.25rem;">
-      <div class="prop-label">2. Logaritmo do quociente</div>
-      <div class="prop-val" style="font-size:1.1rem; margin:0.4rem 0;">log<sub>a</sub>(M / N) = log<sub>a</sub> M − log<sub>a</sub> N</div>
-      <p style="font-size:0.82rem; color:var(--muted); margin:0;">Ex: log₂(32/4) = log₂32 − log₂4 = 5 − 2 = 3</p>
-    </div>
-    <div class="prop" style="margin-bottom:0.75rem; padding:1rem 1.25rem;">
-      <div class="prop-label">3. Logaritmo da potência</div>
-      <div class="prop-val" style="font-size:1.1rem; margin:0.4rem 0;">log<sub>a</sub>(Mⁿ) = n · log<sub>a</sub> M</div>
-      <p style="font-size:0.82rem; color:var(--muted); margin:0;">Ex: log₂(8²) = 2 · log₂8 = 2 · 3 = 6</p>
-    </div>
-    <div class="prop" style="padding:1rem 1.25rem;">
-      <div class="prop-label">4. Mudança de base</div>
-      <div class="prop-val" style="font-size:1.1rem; margin:0.4rem 0;">log<sub>a</sub> b = log<sub>c</sub> b / log<sub>c</sub> a</div>
-      <p style="font-size:0.82rem; color:var(--muted); margin:0;">Permite calcular qualquer logaritmo usando log₁₀ ou ln da calculadora.</p>
-    </div>
-
-    <div class="warn" style="margin-top:1.25rem;">⚠ Erro clássico: log(M + N) ≠ log M + log N. A propriedade vale para <em>produto</em>, não para soma.</div>
-    <div class="tip">✦ Antes das calculadoras, logaritmos transformavam multiplicações em adições — era o "processador" do século XVII. Isso salvava horas de cálculo astronômico.</div>
-  </div>
-
-  <hr class="sep">
-
-  <!-- BLOCO 5: GRÁFICOS -->
+  <!-- B5: PROPRIEDADES -->
   <div class="bloco" id="b5">
-    <div class="bloco-label">Visualização</div>
-    <h2>5. Os gráficos e a relação entre elas</h2>
-    <p>f(x) = aˣ e g(x) = log<sub>a</sub> x são <strong>funções inversas</strong>. Seus gráficos são espelhados pela reta y = x.</p>
+    <div class="bloco-label">Operações</div>
+    <h2>5. Propriedades dos logaritmos</h2>
+    <p>Cada propriedade abaixo nasce diretamente de uma propriedade da potenciação.</p>
+    <div class="prop" style="margin-bottom:.75rem;padding:1rem 1.25rem">
+      <div class="prop-label">1 — Logaritmo do produto</div>
+      <div class="prop-val" style="font-size:1.1rem;margin:.4rem 0">log<sub>a</sub>(M · N) = log<sub>a</sub> M + log<sub>a</sub> N</div>
+      <p style="font-size:.82rem;color:var(--muted);margin:0">Ex: log₂(4 · 8) = log₂4 + log₂8 = 2 + 3 = 5</p>
+    </div>
+    <div class="prop" style="margin-bottom:.75rem;padding:1rem 1.25rem">
+      <div class="prop-label">2 — Logaritmo do quociente</div>
+      <div class="prop-val" style="font-size:1.1rem;margin:.4rem 0">log<sub>a</sub>(M / N) = log<sub>a</sub> M − log<sub>a</sub> N</div>
+      <p style="font-size:.82rem;color:var(--muted);margin:0">Ex: log₂(32/4) = log₂32 − log₂4 = 5 − 2 = 3</p>
+    </div>
+    <div class="prop" style="margin-bottom:.75rem;padding:1rem 1.25rem">
+      <div class="prop-label">3 — Logaritmo da potência</div>
+      <div class="prop-val" style="font-size:1.1rem;margin:.4rem 0">log<sub>a</sub>(Mⁿ) = n · log<sub>a</sub> M</div>
+      <p style="font-size:.82rem;color:var(--muted);margin:0">Ex: log₂(8²) = 2 · log₂8 = 2 · 3 = 6</p>
+    </div>
+    <div class="prop" style="padding:1rem 1.25rem">
+      <div class="prop-label">4 — Mudança de base</div>
+      <div class="prop-val" style="font-size:1.1rem;margin:.4rem 0">log<sub>a</sub> b = log<sub>c</sub> b / log<sub>c</sub> a</div>
+      <p style="font-size:.82rem;color:var(--muted);margin:0">Permite calcular qualquer log usando log₁₀ ou ln da calculadora.</p>
+    </div>
+    <div class="warn" style="margin-top:1.25rem">⚠ Erro clássico: log(M + N) ≠ log M + log N. A propriedade é para <em>produto</em>, não para soma!</div>
+    <div class="tip">✦ Antes das calculadoras, logaritmos transformavam multiplicações em adições — foi o "processador" dos séculos XVII–XIX, usado em astronomia e navegação.</div>
+  </div>
 
+  <hr class="sep">
+
+  <!-- B6: GRÁFICOS COMPARATIVOS -->
+  <div class="bloco" id="b6">
+    <div class="bloco-label">Visualização</div>
+    <h2>6. Os gráficos e a relação entre elas</h2>
+    <p>f(x) = aˣ e g(x) = log<sub>a</sub> x são <strong>funções inversas</strong> — seus gráficos são simétricos em relação à reta y = x. Escala 1:1 real abaixo.</p>
     <div class="ctrl">
-      <label for="baseGraf">Base a</label>
-      <input type="range" id="baseGraf" min="1.1" max="4" step="0.1" value="2" oninput="updateBoth()">
-      <span class="val" id="baseGrafVal">2.0</span>
+      <label for="slBoth">Base a</label>
+      <input type="range" id="slBoth" min="1.2" max="4" step="0.1" value="2">
+      <span class="val" id="vlBoth">2.0</span>
     </div>
     <div class="checkboxes">
-      <label><input type="checkbox" id="showExp" checked onchange="updateBoth()"> <span style="display:inline-block;width:18px;height:2px;background:#7c6dfa;vertical-align:middle;"></span> f(x) = aˣ</label>
-      <label><input type="checkbox" id="showLog" checked onchange="updateBoth()"> <span style="display:inline-block;width:18px;height:2px;background:#6dfad4;vertical-align:middle;"></span> g(x) = log<sub>a</sub> x</label>
-      <label><input type="checkbox" id="showBis" checked onchange="updateBoth()"> <span style="display:inline-block;width:18px;height:2px;background:#7a7a99;border-top:2px dashed #7a7a99;"></span> y = x (simetria)</label>
+      <label><input type="checkbox" id="ckExp" checked onchange="drawBoth()"><span class="legend-line" style="background:#7c6dfa"></span> f(x) = aˣ</label>
+      <label><input type="checkbox" id="ckLog" checked onchange="drawBoth()"><span class="legend-line" style="background:#6dfad4"></span> g(x) = log<sub>a</sub> x</label>
+      <label><input type="checkbox" id="ckBis" checked onchange="drawBoth()"><span class="legend-line" style="background:#7a7a99;border-top:2px dashed #7a7a99;height:0"></span> y = x</label>
     </div>
-    <div class="graph-area">
-      <div class="chart-wrap"><canvas id="bothChart" role="img" aria-label="Gráficos da exponencial e logarítmica">Gráficos da função exponencial e logarítmica.</canvas></div>
-    </div>
-
-    <div class="def" style="margin-top:1.25rem;">
+    <div class="graph-wrap"><canvas id="cvBoth" role="img" aria-label="Gráficos da exponencial e logarítmica com escala 1:1"></canvas></div>
+    <div class="def" style="margin-top:1.25rem">
       <div class="def-label">Por que são inversas?</div>
-      <p>Se o ponto (a, b) pertence ao gráfico de aˣ, então o ponto (b, a) pertence ao gráfico de log<sub>a</sub> x. Trocar x e y é exatamente o que a função inversa faz — e geometricamente isso é a reflexão em y = x.</p>
+      <p>Se (a, b) está em aˣ, então (b, a) está em log<sub>a</sub> x. Trocar x e y é a operação de inversão — geometricamente, é o reflexo em y = x.</p>
     </div>
-
-    <div class="prop-grid" style="margin-top:1rem;">
+    <div class="prop-grid" style="margin-top:1rem">
       <div class="prop"><div class="prop-label">Exponencial · domínio</div><div class="prop-val">ℝ</div></div>
       <div class="prop"><div class="prop-label">Logarítmica · domínio</div><div class="prop-val">(0, +∞)</div></div>
       <div class="prop"><div class="prop-label">Exponencial · imagem</div><div class="prop-val">(0, +∞)</div></div>
       <div class="prop"><div class="prop-label">Logarítmica · imagem</div><div class="prop-val">ℝ</div></div>
     </div>
-    <div class="tip">✦ Domínio e imagem se invertem: mais uma confirmação visual de que são funções inversas.</div>
+    <div class="tip">✦ Domínio e imagem se invertem — mais uma evidência visual de que são funções inversas.</div>
   </div>
 
   <hr class="sep">
 
-  <!-- BLOCO 6: EXERCÍCIOS DE VESTIBULAR -->
-  <div class="bloco" id="b6">
+  <!-- B7: EXERCÍCIOS -->
+  <div class="bloco" id="b7">
     <div class="exer-header">
-      <div class="bloco-label" style="margin:0;">Vestibular</div>
+      <div class="bloco-label" style="margin:0">Vestibular</div>
       <span class="exer-badge">4 exercícios</span>
     </div>
     <h2>Exercícios</h2>
-    <p style="margin-bottom:2rem;">Questões de ENEM, FUVEST e UNICAMP. Clique em uma alternativa e depois em "ver gabarito".</p>
+    <p style="margin-bottom:2rem">Questões de ENEM, FUVEST e UNICAMP. Clique em uma alternativa e depois em "ver gabarito".</p>
 
-    <!-- Q1 -->
     <div class="exer-card">
-      <div class="exer-top">
-        <span class="exer-origem">ENEM 2019</span>
-        <span class="exer-num">01</span>
-      </div>
-      <p class="exer-enunciado">
-        A escala Richter mede a intensidade de terremotos usando logaritmos. Um sismo de magnitude M é definido por M = log(A/A₀), onde A é a amplitude medida e A₀ é uma amplitude de referência. Um terremoto de magnitude 7 tem amplitude como múltiplo do de referência igual a 10⁷. Se um segundo terremoto tem amplitude 1000 vezes maior que o de referência, qual é sua magnitude?
-      </p>
+      <div class="exer-top"><span class="exer-origem">ENEM 2019</span><span class="exer-num">01</span></div>
+      <p class="exer-enunciado">A escala Richter mede a intensidade de terremotos com M = log(A/A₀), onde A é a amplitude medida e A₀ é uma amplitude de referência. Se um segundo terremoto tem amplitude 1 000 vezes maior que a de referência, qual é sua magnitude?</p>
       <ul class="alternativas" id="q1">
-        <li onclick="sel(this,'q1',false)"><span class="letra">A</span> 1</li>
-        <li onclick="sel(this,'q1',false)"><span class="letra">B</span> 2</li>
-        <li onclick="sel(this,'q1',true)"><span class="letra">C</span> 3</li>
-        <li onclick="sel(this,'q1',false)"><span class="letra">D</span> 4</li>
-        <li onclick="sel(this,'q1',false)"><span class="letra">E</span> 5</li>
+        <li onclick="sel(this,'q1',false)"><span class="letra">A</span>1</li>
+        <li onclick="sel(this,'q1',false)"><span class="letra">B</span>2</li>
+        <li onclick="sel(this,'q1',true)"><span class="letra">C</span>3</li>
+        <li onclick="sel(this,'q1',false)"><span class="letra">D</span>4</li>
+        <li onclick="sel(this,'q1',false)"><span class="letra">E</span>5</li>
       </ul>
       <button class="gabarito-btn" onclick="toggleGab(this)">Ver gabarito e resolução</button>
-      <div class="gabarito-area">
-        <strong>Gabarito: C — Magnitude 3</strong><br><br>
-        M = log(A/A₀) = log(1000/1) = log(10³) = 3.<br>
-        Usando a propriedade do logaritmo da potência: log(10³) = 3 · log(10) = 3 · 1 = 3.
-      </div>
+      <div class="gabarito-area"><strong>Gabarito: C — Magnitude 3</strong><br><br>M = log(1000/1) = log(10³) = 3 · log(10) = 3 · 1 = <strong>3</strong></div>
     </div>
 
-    <!-- Q2 -->
     <div class="exer-card">
-      <div class="exer-top">
-        <span class="exer-origem">FUVEST 2022</span>
-        <span class="exer-num">02</span>
-      </div>
-      <p class="exer-enunciado">
-        Sabe-se que log 2 ≈ 0,301 e log 3 ≈ 0,477. Com base nesses valores, qual é o valor aproximado de log 12?
-      </p>
+      <div class="exer-top"><span class="exer-origem">FUVEST 2022</span><span class="exer-num">02</span></div>
+      <p class="exer-enunciado">Sabe-se que log 2 ≈ 0,301 e log 3 ≈ 0,477. Com esses valores, qual é o valor aproximado de log 12?</p>
       <ul class="alternativas" id="q2">
-        <li onclick="sel(this,'q2',false)"><span class="letra">A</span> 0,778</li>
-        <li onclick="sel(this,'q2',false)"><span class="letra">B</span> 0,903</li>
-        <li onclick="sel(this,'q2',false)"><span class="letra">C</span> 1,000</li>
-        <li onclick="sel(this,'q2',true)"><span class="letra">D</span> 1,079</li>
-        <li onclick="sel(this,'q2',false)"><span class="letra">E</span> 1,146</li>
+        <li onclick="sel(this,'q2',false)"><span class="letra">A</span>0,778</li>
+        <li onclick="sel(this,'q2',false)"><span class="letra">B</span>0,903</li>
+        <li onclick="sel(this,'q2',false)"><span class="letra">C</span>1,000</li>
+        <li onclick="sel(this,'q2',true)"><span class="letra">D</span>1,079</li>
+        <li onclick="sel(this,'q2',false)"><span class="letra">E</span>1,146</li>
       </ul>
       <button class="gabarito-btn" onclick="toggleGab(this)">Ver gabarito e resolução</button>
-      <div class="gabarito-area">
-        <strong>Gabarito: D — 1,079</strong><br><br>
-        12 = 4 · 3 = 2² · 3<br>
-        log 12 = log(2² · 3) = log 2² + log 3 = 2·log 2 + log 3<br>
-        = 2 × 0,301 + 0,477 = 0,602 + 0,477 = <strong>1,079</strong>
-      </div>
+      <div class="gabarito-area"><strong>Gabarito: D — 1,079</strong><br><br>12 = 2² · 3 → log 12 = 2·log 2 + log 3 = 2×0,301 + 0,477 = 0,602 + 0,477 = <strong>1,079</strong></div>
     </div>
 
-    <!-- Q3 -->
     <div class="exer-card">
-      <div class="exer-top">
-        <span class="exer-origem">UNICAMP 2023</span>
-        <span class="exer-num">03</span>
-      </div>
-      <p class="exer-enunciado">
-        Uma população bacteriana dobra a cada hora. Se no instante t = 0 há 500 bactérias, a quantidade em função do tempo é P(t) = 500 · 2ᵗ. Em quantas horas a população ultrapassará 16 000 bactérias? (Considere que t é inteiro.)
-      </p>
+      <div class="exer-top"><span class="exer-origem">UNICAMP 2023</span><span class="exer-num">03</span></div>
+      <p class="exer-enunciado">Uma colônia de bactérias dobra a cada hora. Se há 500 bactérias no instante t = 0, a quantidade é P(t) = 500 · 2ᵗ. Em quantas horas a população ultrapassa 16 000?</p>
       <ul class="alternativas" id="q3">
-        <li onclick="sel(this,'q3',false)"><span class="letra">A</span> 3 horas</li>
-        <li onclick="sel(this,'q3',false)"><span class="letra">B</span> 4 horas</li>
-        <li onclick="sel(this,'q3',true)"><span class="letra">C</span> 5 horas</li>
-        <li onclick="sel(this,'q3',false)"><span class="letra">D</span> 6 horas</li>
-        <li onclick="sel(this,'q3',false)"><span class="letra">E</span> 8 horas</li>
+        <li onclick="sel(this,'q3',false)"><span class="letra">A</span>3 horas</li>
+        <li onclick="sel(this,'q3',false)"><span class="letra">B</span>4 horas</li>
+        <li onclick="sel(this,'q3',true)"><span class="letra">C</span>5 horas</li>
+        <li onclick="sel(this,'q3',false)"><span class="letra">D</span>6 horas</li>
+        <li onclick="sel(this,'q3',false)"><span class="letra">E</span>8 horas</li>
       </ul>
       <button class="gabarito-btn" onclick="toggleGab(this)">Ver gabarito e resolução</button>
-      <div class="gabarito-area">
-        <strong>Gabarito: C — 5 horas</strong><br><br>
-        500 · 2ᵗ > 16 000<br>
-        2ᵗ > 32<br>
-        2ᵗ > 2⁵<br>
-        t > 5<br>
-        Portanto, em t = 5 horas: P(5) = 500 · 32 = 16 000 (exatamente).<br>
-        Para <em>ultrapassar</em>, precisamos de t = 5 (iguala) → na prática, t = 5 já é o ponto de passagem, conforme a questão pede.
-      </div>
+      <div class="gabarito-area"><strong>Gabarito: C — 5 horas</strong><br><br>500 · 2ᵗ > 16 000 → 2ᵗ > 32 = 2⁵ → t > 5 → em t = 5: P(5) = 500 · 32 = 16 000 ✓</div>
     </div>
 
-    <!-- Q4 -->
     <div class="exer-card">
-      <div class="exer-top">
-        <span class="exer-origem">ENEM 2021</span>
-        <span class="exer-num">04</span>
-      </div>
-      <p class="exer-enunciado">
-        O pH de uma solução é definido por pH = −log[H⁺], onde [H⁺] é a concentração de íons hidrogênio (em mol/L). Uma solução com pH = 5 tem concentração de H⁺ igual a 10⁻⁵ mol/L. Se outra solução tem pH = 3, quantas vezes maior é a concentração de H⁺ em relação à primeira?
-      </p>
+      <div class="exer-top"><span class="exer-origem">ENEM 2021</span><span class="exer-num">04</span></div>
+      <p class="exer-enunciado">O pH é definido por pH = −log[H⁺]. Uma solução com pH = 5 tem [H⁺] = 10⁻⁵ mol/L. Quantas vezes maior é a concentração de H⁺ de uma solução com pH = 3 em relação à de pH = 5?</p>
       <ul class="alternativas" id="q4">
-        <li onclick="sel(this,'q4',false)"><span class="letra">A</span> 2 vezes</li>
-        <li onclick="sel(this,'q4',false)"><span class="letra">B</span> 10 vezes</li>
-        <li onclick="sel(this,'q4',false)"><span class="letra">C</span> 50 vezes</li>
-        <li onclick="sel(this,'q4',true)"><span class="letra">D</span> 100 vezes</li>
-        <li onclick="sel(this,'q4',false)"><span class="letra">E</span> 1 000 vezes</li>
+        <li onclick="sel(this,'q4',false)"><span class="letra">A</span>2 vezes</li>
+        <li onclick="sel(this,'q4',false)"><span class="letra">B</span>10 vezes</li>
+        <li onclick="sel(this,'q4',false)"><span class="letra">C</span>50 vezes</li>
+        <li onclick="sel(this,'q4',true)"><span class="letra">D</span>100 vezes</li>
+        <li onclick="sel(this,'q4',false)"><span class="letra">E</span>1 000 vezes</li>
       </ul>
       <button class="gabarito-btn" onclick="toggleGab(this)">Ver gabarito e resolução</button>
-      <div class="gabarito-area">
-        <strong>Gabarito: D — 100 vezes</strong><br><br>
-        pH 5 → [H⁺] = 10⁻⁵ mol/L<br>
-        pH 3 → [H⁺] = 10⁻³ mol/L<br>
-        Razão = 10⁻³ / 10⁻⁵ = 10⁻³⁻(⁻⁵) = 10² = <strong>100 vezes</strong><br>
-        Cada unidade de pH representa uma variação de 10× na concentração.
-      </div>
+      <div class="gabarito-area"><strong>Gabarito: D — 100 vezes</strong><br><br>pH 3 → [H⁺] = 10⁻³ &nbsp;|&nbsp; pH 5 → [H⁺] = 10⁻⁵<br>Razão = 10⁻³ / 10⁻⁵ = 10² = <strong>100 vezes</strong></div>
     </div>
   </div>
 
   <div class="nav-final">
     <a href="index.html" class="btn-final btn-home">← Voltar ao início</a>
   </div>
-
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-  /* Progress bar */
-  window.addEventListener('scroll', () => {
-    const p = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-    document.getElementById('pgbar').style.width = Math.min(100, p * 100).toFixed(1) + '%';
-  });
+/* ===== PROGRESS BAR ===== */
+window.addEventListener('scroll',()=>{
+  const p=window.scrollY/(document.body.scrollHeight-window.innerHeight);
+  document.getElementById('pgbar').style.width=Math.min(100,p*100).toFixed(1)+'%';
+});
 
-  /* Alternativas */
-  function sel(el, qid, correct) {
-    document.querySelectorAll('#'+qid+' li').forEach(li => li.classList.remove('correta','errada'));
-    el.classList.add(correct ? 'correta' : 'errada');
+/* ===== LOG CALC ===== */
+function calcLog(){
+  const b=document.getElementById('logBase').value;
+  const base=b==='e'?Math.E:parseFloat(b);
+  const num=parseFloat(document.getElementById('logNum').value);
+  const el=document.getElementById('logResult');
+  if(!num||num<=0||base<=0||base===1){el.textContent='inválido';return;}
+  el.textContent=(Math.log(num)/Math.log(base)).toFixed(3);
+}
+document.getElementById('logBase').addEventListener('input',calcLog);
+document.getElementById('logNum').addEventListener('input',calcLog);
+calcLog();
+
+/* ===== EXERCISES ===== */
+function sel(el,qid,correct){
+  document.querySelectorAll('#'+qid+' li').forEach(li=>li.classList.remove('correta','errada'));
+  el.classList.add(correct?'correta':'errada');
+}
+function toggleGab(btn){
+  const a=btn.nextElementSibling;a.classList.toggle('show');
+  btn.textContent=a.classList.contains('show')?'Ocultar gabarito':'Ver gabarito e resolução';
+}
+
+/* ===== GRAPH ENGINE — custom canvas, true 1:1 scale ===== */
+function Graph(canvasId){
+  const cv=document.getElementById(canvasId);
+  if(!cv)return null;
+  const dpr=window.devicePixelRatio||1;
+  const size=cv.offsetWidth||400;
+  cv.width=cv.height=size*dpr;
+  cv.style.width=cv.style.height=size+'px';
+  const ctx=cv.getContext('2d');
+  ctx.scale(dpr,dpr);
+  return {cv,ctx,size};
+}
+
+function drawAxesAndGrid(ctx,size,xMin,xMax,yMin,yMax,pad){
+  const pw=size-2*pad,ph=size-2*pad;
+  const tx=x=>pad+(x-xMin)/(xMax-xMin)*pw;
+  const ty=y=>size-pad-(y-yMin)/(yMax-yMin)*ph;
+
+  ctx.clearRect(0,0,size,size);
+
+  // grid
+  const step=1;
+  ctx.strokeStyle='rgba(124,109,250,0.07)';ctx.lineWidth=1;
+  for(let x=Math.ceil(xMin);x<=xMax;x+=step){
+    ctx.beginPath();ctx.moveTo(tx(x),pad);ctx.lineTo(tx(x),size-pad);ctx.stroke();
   }
-  function toggleGab(btn) {
-    const area = btn.nextElementSibling;
-    area.classList.toggle('show');
-    btn.textContent = area.classList.contains('show') ? 'Ocultar gabarito' : 'Ver gabarito e resolução';
+  for(let y=Math.ceil(yMin);y<=yMax;y+=step){
+    ctx.beginPath();ctx.moveTo(pad,ty(y));ctx.lineTo(size-pad,ty(y));ctx.stroke();
   }
 
-  /* Logaritmo calc */
-  function calcLog() {
-    const baseStr = document.getElementById('logBase').value;
-    const base = baseStr === 'e' ? Math.E : parseFloat(baseStr);
-    const num = parseFloat(document.getElementById('logNum').value);
-    const el = document.getElementById('logResult');
-    if (!num || num <= 0 || base <= 0 || base === 1) { el.textContent = 'inválido'; return; }
-    el.textContent = (Math.log(num)/Math.log(base)).toFixed(3);
+  // axes
+  ctx.strokeStyle='rgba(240,240,248,0.25)';ctx.lineWidth=1.5;
+  // x-axis
+  if(yMin<=0&&yMax>=0){ctx.beginPath();ctx.moveTo(pad,ty(0));ctx.lineTo(size-pad,ty(0));ctx.stroke();}
+  // y-axis
+  if(xMin<=0&&xMax>=0){ctx.beginPath();ctx.moveTo(tx(0),pad);ctx.lineTo(tx(0),size-pad);ctx.stroke();}
+
+  // arrows on axes
+  ctx.fillStyle='rgba(240,240,248,0.25)';
+  if(yMin<=0&&yMax>=0){
+    const ax=size-pad,ay=ty(0);
+    ctx.beginPath();ctx.moveTo(ax+8,ay);ctx.lineTo(ax,ay-4);ctx.lineTo(ax,ay+4);ctx.closePath();ctx.fill();
   }
-  document.getElementById('logBase').addEventListener('input', calcLog);
-  document.getElementById('logNum').addEventListener('input', calcLog);
-  calcLog();
+  if(xMin<=0&&xMax>=0){
+    const ax=tx(0),ay=pad;
+    ctx.beginPath();ctx.moveTo(ax,ay-8);ctx.lineTo(ax-4,ay);ctx.lineTo(ax+4,ay);ctx.closePath();ctx.fill();
+  }
 
-  let expChart, bothChart;
+  // labels
+  ctx.fillStyle='#7a7a99';ctx.font='11px DM Sans,sans-serif';
+  ctx.textAlign='center';
+  for(let x=Math.ceil(xMin);x<=xMax;x++){
+    if(x===0)continue;
+    if(Math.abs(tx(x)-tx(0))<30)continue; // skip near origin
+    ctx.fillText(x,tx(x),size-pad+15);
+  }
+  ctx.textAlign='right';
+  for(let y=Math.ceil(yMin);y<=yMax;y++){
+    if(y===0)continue;
+    if(Math.abs(ty(y)-ty(0))<15)continue;
+    ctx.fillText(y,pad-5,ty(y)+4);
+  }
+  // axis names
+  ctx.textAlign='center';ctx.fillStyle='rgba(240,240,248,0.4)';ctx.font='bold 12px Syne,sans-serif';
+  ctx.fillText('x',size-pad+14,ty(0)+4);
+  ctx.textAlign='left';ctx.fillText('y',tx(0)+4,pad-10);
+  ctx.fillText('O',tx(0)-14,ty(0)+14);
 
-  function getExp(base, xs) { return xs.map(x => parseFloat(Math.pow(base,x).toFixed(5))); }
-  function getLog(base, xs) { return xs.map(x => x > 0 ? parseFloat((Math.log(x)/Math.log(base)).toFixed(5)) : null); }
+  return {tx,ty};
+}
 
-  const chartDefaults = {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { ticks: { maxTicksLimit: 7, color: '#7a7a99' }, grid: { color: 'rgba(124,109,250,0.06)' } },
-      y: { ticks: { maxTicksLimit: 6, color: '#7a7a99' }, grid: { color: 'rgba(124,109,250,0.06)' } }
+function plotLine(ctx,tx,ty,pts,color,lw,dash){
+  ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=lw||2.5;
+  if(dash)ctx.setLineDash(dash);else ctx.setLineDash([]);
+  let first=true;
+  for(const [x,y] of pts){
+    if(y===null||!isFinite(y)){first=true;continue;}
+    if(first){ctx.moveTo(tx(x),ty(y));first=false;}
+    else ctx.lineTo(tx(x),ty(y));
+  }
+  ctx.stroke();ctx.setLineDash([]);
+}
+
+function sampleFn(fn,xMin,xMax,n){
+  const pts=[];
+  for(let i=0;i<=n;i++){
+    const x=xMin+i*(xMax-xMin)/n;
+    let y;try{y=fn(x);}catch(e){y=null;}
+    if(!isFinite(y)||y>1e10||y<-1e10)y=null;
+    pts.push([x,y]);
+  }
+  return pts;
+}
+
+/* Exponential graph */
+let expBase=2;
+function drawExp(){
+  const g=Graph('cvExp');if(!g)return;
+  const {ctx,size}=g;
+  const pad=48,xMin=-5,xMax=5,yMin=-5,yMax=5; // true 1:1
+  const {tx,ty}=drawAxesAndGrid(ctx,size,xMin,xMax,yMin,yMax,pad);
+  const pts=sampleFn(x=>Math.pow(expBase,x),xMin,xMax,500);
+  plotLine(ctx,tx,ty,pts,'#7c6dfa',2.5);
+  // label
+  ctx.fillStyle='#7c6dfa';ctx.font='bold 12px Syne,sans-serif';ctx.textAlign='left';
+  ctx.fillText('f(x)='+expBase.toFixed(1)+'ˣ',tx(1.5)+4,ty(Math.pow(expBase,1.5))-8);
+}
+document.getElementById('slExp').addEventListener('input',function(){
+  expBase=parseFloat(this.value);
+  document.getElementById('vlExp').textContent=expBase.toFixed(1);
+  const tip=document.getElementById('expTip');
+  tip.textContent=expBase>1
+    ?'Base '+expBase.toFixed(1)+' → crescente. Passa sempre pelo ponto (0,1).'
+    :'Base '+expBase.toFixed(1)+' → decrescente (decaimento). Ainda passa pelo ponto (0,1).';
+  drawExp();
+});
+
+/* Combined graph (exp + log + bisector), 1:1 */
+function drawBoth(){
+  const g=Graph('cvBoth');if(!g)return;
+  const {ctx,size}=g;
+  const base=parseFloat(document.getElementById('slBoth').value);
+  document.getElementById('vlBoth').textContent=base.toFixed(1);
+  const pad=48,xMin=-5,xMax=5,yMin=-5,yMax=5;
+  const {tx,ty}=drawAxesAndGrid(ctx,size,xMin,xMax,yMin,yMax,pad);
+  const se=document.getElementById('ckExp').checked;
+  const sl=document.getElementById('ckLog').checked;
+  const sb=document.getElementById('ckBis').checked;
+  if(sb){
+    const bp=sampleFn(x=>x,xMin,xMax,10);
+    plotLine(ctx,tx,ty,bp,'rgba(122,122,153,0.55)',1.5,[6,5]);
+    ctx.fillStyle='rgba(122,122,153,0.55)';ctx.font='11px DM Sans,sans-serif';
+    ctx.textAlign='left';ctx.fillText('y=x',tx(3.5)+4,ty(3.5)-8);
+  }
+  if(se){
+    const ep=sampleFn(x=>Math.pow(base,x),xMin,xMax,500);
+    plotLine(ctx,tx,ty,ep,'#7c6dfa',2.5);
+    ctx.fillStyle='#7c6dfa';ctx.font='bold 12px Syne,sans-serif';
+    ctx.textAlign='left';ctx.fillText('aˣ',tx(1.8)+4,ty(Math.min(4.5,Math.pow(base,1.8)))-8);
+  }
+  if(sl){
+    const lp=sampleFn(x=>x>0?Math.log(x)/Math.log(base):null,xMin,xMax,500);
+    plotLine(ctx,tx,ty,lp,'#6dfad4',2.5);
+    ctx.fillStyle='#6dfad4';ctx.font='bold 12px Syne,sans-serif';
+    ctx.textAlign='left';ctx.fillText('logₐx',tx(3)+4,ty(Math.log(3)/Math.log(base))+14);
+  }
+}
+document.getElementById('slBoth').addEventListener('input',drawBoth);
+
+/* Init graphs on load + resize */
+function initGraphs(){drawExp();drawBoth();}
+window.addEventListener('load',initGraphs);
+window.addEventListener('resize',()=>{setTimeout(initGraphs,100);});
+
+/* ===== JUICE MACHINE GAME ===== */
+const items=[
+  {emoji:'🍊',name:'Laranja',   fruit:true, color:'#ff8c1a',colorName:'laranja'},
+  {emoji:'🍋',name:'Limão',     fruit:true, color:'#d4e820',colorName:'limão'},
+  {emoji:'🍓',name:'Morango',   fruit:true, color:'#e8132e',colorName:'morango'},
+  {emoji:'🍍',name:'Abacaxi',   fruit:true, color:'#f5c518',colorName:'abacaxi'},
+  {emoji:'🥭',name:'Manga',     fruit:true, color:'#ff9500',colorName:'manga'},
+  {emoji:'🍇',name:'Uva',       fruit:true, color:'#8e24aa',colorName:'uva'},
+  {emoji:'🫐',name:'Mirtilo',   fruit:true, color:'#3949ab',colorName:'mirtilo'},
+  {emoji:'🥕',name:'Cenoura',   fruit:false,color:'#ef6c00',errorName:'cenoura'},
+  {emoji:'🥦',name:'Brócolis',  fruit:false,color:'#2e7d32',errorName:'brócolis'},
+  {emoji:'🌽',name:'Milho',     fruit:false,color:'#f9a825',errorName:'milho'},
+  {emoji:'🧅',name:'Cebola',    fruit:false,color:'#795548',errorName:'cebola'},
+  {name:'Beterraba',emoji:'🫛', fruit:false,color:'#c62828',errorName:'beterraba', customEmoji:true},
+];
+// fix beterraba (no good emoji) — use colored circle
+items[11].emoji='🔴';
+
+const grid=document.getElementById('jgItems');
+items.forEach((item,i)=>{
+  const btn=document.createElement('div');
+  btn.className='jg-item';
+  btn.innerHTML=`<span class="ji-emoji">${item.emoji}</span><span class="ji-name">${item.name}</span><span class="ji-dot" style="background:${item.color}"></span>`;
+  btn.addEventListener('click',()=>processItem(item,btn));
+  grid.appendChild(btn);
+});
+
+let processing=false;
+function processItem(item,btn){
+  if(processing)return;
+  processing=true;
+  // highlight selected
+  document.querySelectorAll('.jg-item').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  // activate arrows
+  document.getElementById('arrowLeft').classList.add('active');
+  // animate gear
+  const gear=document.getElementById('gearG');
+  gear.style.animation='machineSpin 0.4s linear infinite';
+
+  setTimeout(()=>{
+    gear.style.animation='none';
+    document.getElementById('arrowLeft').classList.remove('active');
+    if(item.fruit){
+      // fill glass
+      document.getElementById('arrowRight').classList.add('active');
+      const fill=document.getElementById('juiceFill');
+      const stream=document.getElementById('liquidStream');
+      fill.setAttribute('fill',item.color);fill.setAttribute('opacity','0.85');
+      stream.setAttribute('fill',item.color);stream.setAttribute('opacity','0.9');
+      fill.setAttribute('y','30');
+      // straw
+      document.getElementById('strawLine').setAttribute('stroke',item.color);
+      document.getElementById('strawLine').setAttribute('opacity','0.9');
+      // result
+      const res=document.getElementById('jgResult');
+      res.className='jg-result success';
+      res.textContent='✓ Suco de '+item.name+'! A máquina aceitou.';
+      // domain box
+      const db=document.getElementById('jgDomainBox');
+      db.style.display='block';
+      db.innerHTML='<strong style="color:var(--acc3)">✦ Domínio:</strong> '+item.name+' é uma fruta → está no domínio da máquina. A função produz um resultado válido.';
+      setTimeout(()=>{document.getElementById('arrowRight').classList.remove('active');stream.setAttribute('opacity','0');},600);
+    } else {
+      // error
+      const fill=document.getElementById('juiceFill');
+      fill.setAttribute('y','105');fill.setAttribute('opacity','0');
+      document.getElementById('strawLine').setAttribute('opacity','0');
+      document.getElementById('liquidStream').setAttribute('opacity','0');
+      const res=document.getElementById('jgResult');
+      res.className='jg-result error';
+      // shake machine
+      const mwrap=document.querySelector('.jg-machine-wrap');
+      mwrap.style.animation='none';
+      const stream=document.getElementById('liquidStream');stream.setAttribute('opacity','0');
+      // display error
+      const errName=item.errorName||item.name.toLowerCase();
+      res.textContent='✗ A máquina não faz suco de '+errName+'. '+item.name+' não está no domínio!';
+      const db=document.getElementById('jgDomainBox');
+      db.style.display='block';
+      db.innerHTML='<strong style="color:var(--acc2)">⚠ Fora do domínio:</strong> '+item.name+' não é uma fruta → não está no domínio da máquina de sucos. Em outras palavras, <em>'+item.name.toLowerCase()+'</em> não está no domínio da máquina.';
+      // small shake animation
+      btn.style.animation='none';
+      btn.style.transform='translateX(5px)';
+      setTimeout(()=>{ btn.style.transform='translateX(-5px)'; },80);
+      setTimeout(()=>{ btn.style.transform='translateX(3px)'; },160);
+      setTimeout(()=>{ btn.style.transform='translateX(0)'; },240);
     }
-  };
-
-  function initExp() {
-    if (expChart) expChart.destroy();
-    const xs = Array.from({length:49}, (_,i) => -3 + i*0.125);
-    const base = parseFloat(document.getElementById('baseExp').value);
-    expChart = new Chart(document.getElementById('expChart').getContext('2d'), {
-      type:'line',
-      data: { labels: xs.map(x=>x.toFixed(2)), datasets: [{
-        data: getExp(base,xs), borderColor:'#7c6dfa', borderWidth:2.5,
-        backgroundColor:'rgba(124,109,250,0.08)', fill:true, pointRadius:0, tension:0.4
-      }]},
-      options: { ...chartDefaults, scales: { ...chartDefaults.scales, y: { ...chartDefaults.scales.y, min:0, max:8 } } }
-    });
-  }
-
-  function updateExp() {
-    const base = parseFloat(document.getElementById('baseExp').value);
-    document.getElementById('baseExpVal').textContent = base.toFixed(1);
-    const tip = document.getElementById('expTip');
-    tip.textContent = base > 1
-      ? 'Base ' + base.toFixed(1) + ': função crescente — quanto maior o expoente, maior o valor. Passa sempre pelo ponto (0, 1).'
-      : 'Base ' + base.toFixed(1) + ': função decrescente — representa decaimento. Ainda passa pelo ponto (0, 1).';
-    if (!expChart) { initExp(); return; }
-    const xs = Array.from({length:49},(_,i)=>-3+i*0.125);
-    expChart.data.datasets[0].data = getExp(base, xs);
-    expChart.update();
-  }
-
-  function initBoth() {
-    if (bothChart) bothChart.destroy();
-    const xs = Array.from({length:61},(_,i)=>-2+i*0.1);
-    const base = parseFloat(document.getElementById('baseGraf').value);
-    const se = document.getElementById('showExp').checked;
-    const sl = document.getElementById('showLog').checked;
-    const sb = document.getElementById('showBis').checked;
-    bothChart = new Chart(document.getElementById('bothChart').getContext('2d'), {
-      type:'line',
-      data: { labels: xs.map(x=>x.toFixed(1)), datasets: [
-        { data: se ? getExp(base,xs):[], borderColor:'#7c6dfa', borderWidth:2.5, pointRadius:0, tension:0.4, fill:false, hidden:!se },
-        { data: sl ? getLog(base,xs):[], borderColor:'#6dfad4', borderWidth:2.5, pointRadius:0, tension:0.4, fill:false, hidden:!sl },
-        { data: sb ? xs.map(x=>parseFloat(x.toFixed(2))):[], borderColor:'#7a7a99', borderWidth:1.5, pointRadius:0, tension:0, fill:false, borderDash:[6,4], hidden:!sb }
-      ]},
-      options: { ...chartDefaults, scales: {
-        x: { ...chartDefaults.scales.x, min:0, max:30 },
-        y: { ...chartDefaults.scales.y, min:-3, max:5 }
-      }}
-    });
-  }
-
-  function updateBoth() {
-    const base = parseFloat(document.getElementById('baseGraf').value);
-    document.getElementById('baseGrafVal').textContent = base.toFixed(1);
-    if (!bothChart) { initBoth(); return; }
-    const xs = Array.from({length:61},(_,i)=>-2+i*0.1);
-    const se = document.getElementById('showExp').checked;
-    const sl = document.getElementById('showLog').checked;
-    const sb = document.getElementById('showBis').checked;
-    bothChart.data.datasets[0].data = se ? getExp(base,xs):[];
-    bothChart.data.datasets[1].data = sl ? getLog(base,xs):[];
-    bothChart.data.datasets[2].data = sb ? xs.map(x=>parseFloat(x.toFixed(2))):[];
-    bothChart.data.datasets[0].hidden = !se;
-    bothChart.data.datasets[1].hidden = !sl;
-    bothChart.data.datasets[2].hidden = !sb;
-    bothChart.update();
-  }
-
-  window.addEventListener('load', () => { initExp(); initBoth(); });
+    processing=false;
+  },700);
+}
 </script>
 </body>
 </html>
