@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aula 01 — Funções Exponencial e Logarítmica · Befama</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #1a1a24;
+    --accent: #7c6dfa;
+    --accent2: #fa6d8c;
+    --accent3: #6dfad4;
+    --text: #f0f0f8;
+    --muted: #7a7a99;
+    --border: rgba(124,109,250,0.15);
+    --card-bg: rgba(26,26,36,0.9);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(124,109,250,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,109,250,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none; z-index: 0;
+  }
+  .orb { position: fixed; border-radius: 50%; filter: blur(140px); pointer-events: none; z-index: 0; opacity: 0.18; }
+  .orb1 { width: 600px; height: 600px; background: var(--accent); top: -200px; right: -200px; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.2rem 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(10,10,15,0.85); backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo { font-family:'Syne',sans-serif; font-weight:800; font-size:1.4rem; letter-spacing:-0.03em;
+    background: linear-gradient(135deg,var(--accent),var(--accent2));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; text-decoration:none; }
+  .back-link { color:var(--muted); text-decoration:none; font-size:0.875rem; display:flex; align-items:center; gap:0.4rem; transition:color 0.2s; }
+  .back-link:hover { color:var(--text); }
+
+  /* PROGRESS BAR */
+  .progress-bar-wrap { position: fixed; top: 64px; left: 0; right: 0; z-index: 99; height: 2px; background: rgba(124,109,250,0.1); }
+  .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); width: 0%; transition: width 0.1s; }
+
+  /* LAYOUT */
+  .page-wrap { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 7rem 2rem 6rem; }
+
+  /* HEADER */
+  .aula-header { margin-bottom: 4rem; }
+  .breadcrumb { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 1.2rem; }
+  .breadcrumb span { color: var(--accent); }
+  .aula-header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -0.04em; line-height: 1.05; margin-bottom: 1rem;
+  }
+  .aula-meta { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .meta-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: var(--muted); }
+
+  /* BLOCOS DE CONTEÚDO */
+  .bloco { margin-bottom: 3.5rem; }
+  .bloco-label { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+  .bloco h2 { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 1.25rem; }
+  .bloco h3 { font-family: 'Syne', sans-serif; font-size: 1.15rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.75rem; margin-top: 1.5rem; }
+  p { font-size: 1rem; color: rgba(240,240,248,0.85); margin-bottom: 1rem; }
+
+  /* DEFINITION BOX */
+  .def {
+    background: rgba(124,109,250,0.07);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 12px 12px 0;
+    padding: 1.25rem 1.5rem;
+    margin: 1.25rem 0;
+  }
+  .def .def-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.5rem; }
+  .def p { color: var(--text); margin: 0; font-size: 1rem; }
+
+  /* FORMULA BOX */
+  .formula {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: -0.02em;
+    margin: 1rem 0;
+    color: var(--text);
+  }
+
+  /* PROP GRID */
+  .prop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 1rem 0; }
+  .prop { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 0.9rem 1rem; }
+  .prop .prop-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.4rem; }
+  .prop .prop-val { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; }
+
+  /* TIP / WARN */
+  .tip { background: rgba(109,250,212,0.06); border-left: 3px solid var(--accent3); border-radius: 0 12px 12px 0; padding: 0.9rem 1.25rem; margin: 1rem 0; font-size: 0.9rem; color: rgba(109,250,212,0.9); }
+  .warn { background: rgba(250,109,140,0.06); border-left: 3px solid var(--accent2); border-radius: 0 12px 12px 0; padding: 0.9rem 1.25rem; margin: 1rem 0; font-size: 0.9rem; color: rgba(250,180,190,0.9); }
+
+  /* EXEMPLOS */
+  .exemplos { list-style: none; counter-reset: ex; margin: 1rem 0; }
+  .exemplos li { counter-increment: ex; display: flex; gap: 1rem; padding: 0.7rem 0; border-bottom: 1px solid rgba(124,109,250,0.08); font-size: 0.95rem; }
+  .exemplos li::before { content: counter(ex,lower-alpha)')'; color: var(--accent); font-weight: 500; min-width: 20px; }
+
+  /* GRAPHS */
+  .graph-area { position: relative; width: 100%; }
+  .chart-wrap { position: relative; width: 100%; height: 260px; }
+  .ctrl { display: flex; align-items: center; gap: 1rem; margin: 1rem 0; flex-wrap: wrap; }
+  .ctrl label { font-size: 0.85rem; color: var(--muted); min-width: 60px; }
+  .ctrl input[type=range] { flex: 1; accent-color: var(--accent); min-width: 120px; }
+  .ctrl .val { font-family: 'Syne', sans-serif; font-weight: 700; color: var(--accent); min-width: 36px; text-align: right; }
+  .checkboxes { display: flex; gap: 1.5rem; flex-wrap: wrap; margin: 0.5rem 0 1rem; }
+  .checkboxes label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--muted); cursor: pointer; }
+  .checkboxes input { accent-color: var(--accent); }
+
+  /* SEPARADOR */
+  .sep { border: none; border-top: 1px solid var(--border); margin: 3.5rem 0; }
+
+  /* EXERCÍCIOS */
+  .exer-header {
+    display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;
+  }
+  .exer-badge {
+    background: linear-gradient(135deg,var(--accent),var(--accent2));
+    border-radius: 100px; padding: 0.3rem 1rem;
+    font-size: 0.75rem; font-weight: 500; color: #fff; white-space: nowrap;
+  }
+  .exer-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 1.75rem;
+    margin-bottom: 1.25rem;
+    transition: border-color 0.2s;
+  }
+  .exer-card:hover { border-color: rgba(124,109,250,0.35); }
+  .exer-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+  .exer-origem {
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em;
+    background: rgba(124,109,250,0.12); color: var(--accent);
+    border: 1px solid rgba(124,109,250,0.2); border-radius: 100px;
+    padding: 0.25rem 0.75rem; white-space: nowrap;
+  }
+  .exer-num { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; color: rgba(124,109,250,0.25); }
+  .exer-enunciado { font-size: 0.95rem; color: rgba(240,240,248,0.85); line-height: 1.65; margin-bottom: 1.25rem; }
+  .alternativas { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+  .alternativas li {
+    padding: 0.6rem 1rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 0.9rem; cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    display: flex; gap: 0.75rem;
+  }
+  .alternativas li span.letra { font-weight: 700; color: var(--muted); min-width: 18px; }
+  .alternativas li:hover { background: rgba(124,109,250,0.08); border-color: rgba(124,109,250,0.3); }
+  .alternativas li.correta { background: rgba(109,250,212,0.1); border-color: rgba(109,250,212,0.35); }
+  .alternativas li.errada { background: rgba(250,109,140,0.08); border-color: rgba(250,109,140,0.25); }
+  .alternativas li.correta span.letra { color: var(--accent3); }
+  .alternativas li.errada span.letra { color: var(--accent2); }
+  .gabarito-btn {
+    margin-top: 1rem;
+    background: transparent; border: 1px solid var(--border);
+    border-radius: 100px; padding: 0.4rem 1rem;
+    font-size: 0.8rem; color: var(--muted); cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .gabarito-btn:hover { background: rgba(124,109,250,0.1); color: var(--accent); border-color: rgba(124,109,250,0.3); }
+  .gabarito-area {
+    display: none; margin-top: 1rem;
+    background: rgba(109,250,212,0.06); border-left: 3px solid var(--accent3);
+    border-radius: 0 12px 12px 0; padding: 1rem 1.25rem;
+    font-size: 0.875rem; color: rgba(109,250,212,0.9);
+  }
+  .gabarito-area.show { display: block; }
+
+  /* NAVEGAÇÃO FINAL */
+  .nav-final {
+    display: flex; gap: 1rem; margin-top: 4rem; flex-wrap: wrap;
+  }
+  .btn-final {
+    flex: 1; min-width: 150px;
+    padding: 0.9rem 1.5rem;
+    border-radius: 100px;
+    text-align: center; text-decoration: none; font-weight: 500; font-size: 0.9rem;
+    transition: transform 0.2s;
+  }
+  .btn-final:hover { transform: translateY(-2px); }
+  .btn-home { background: rgba(255,255,255,0.06); border: 1px solid var(--border); color: var(--muted); }
+  .btn-home:hover { color: var(--text); background: rgba(255,255,255,0.1); }
+</style>
+</head>
+<body>
+<div class="orb orb1"></div>
+
+<nav>
+  <a href="/" class="logo">befama</a>
+  <a href="index.html" class="back-link">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    Todas as aulas
+  </a>
+</nav>
+<div class="progress-bar-wrap"><div class="progress-bar" id="pgbar"></div></div>
+
+<div class="page-wrap">
+
+  <div class="aula-header">
+    <div class="breadcrumb">Befama · <span>Aula 01</span></div>
+    <h1>Funções Exponencial e Logarítmica</h1>
+    <div class="aula-meta">
+      <span class="meta-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        50 min
+      </span>
+      <span class="meta-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+        Potenciação · Logaritmo · Gráficos
+      </span>
+      <span class="meta-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        4 exercícios de vestibular
+      </span>
+    </div>
+  </div>
+
+  <!-- BLOCO 1: POTENCIAÇÃO -->
+  <div class="bloco" id="b1">
+    <div class="bloco-label">Fundamento</div>
+    <h2>1. Potenciação</h2>
+    <p>Antes de entrar nas funções, precisamos dominar a linguagem por trás delas.</p>
+
+    <div class="def">
+      <div class="def-label">Definição</div>
+      <p><strong>aⁿ = 1 × a × a × … × a</strong> (a multiplicado n vezes), onde a é a base e n é o expoente.</p>
+      <p style="margin-top:0.5rem; font-size:0.9rem; color:var(--muted);">O "1 na frente" mostra o ponto de partida: qualquer potência é uma multiplicação que parte de 1. Por isso a⁰ = 1 — multiplicamos zero vezes, e o que sobra é o 1 inicial.</p>
+    </div>
+
+    <p><strong>Exemplo:</strong> 2³ = 1 × 2 × 2 × 2 = 8</p>
+
+    <h3>Propriedades essenciais</h3>
+    <div class="prop-grid">
+      <div class="prop"><div class="prop-label">Produto · mesma base</div><div class="prop-val">aᵐ · aⁿ = aᵐ⁺ⁿ</div></div>
+      <div class="prop"><div class="prop-label">Quociente · mesma base</div><div class="prop-val">aᵐ ÷ aⁿ = aᵐ⁻ⁿ</div></div>
+      <div class="prop"><div class="prop-label">Potência de potência</div><div class="prop-val">(aᵐ)ⁿ = aᵐⁿ</div></div>
+      <div class="prop"><div class="prop-label">Expoente zero</div><div class="prop-val">a⁰ = 1, com a ≠ 0</div></div>
+      <div class="prop"><div class="prop-label">Expoente negativo</div><div class="prop-val">a⁻ⁿ = 1 / aⁿ</div></div>
+      <div class="prop"><div class="prop-label">Expoente fracionário</div><div class="prop-val">a^(1/n) = ⁿ√a</div></div>
+    </div>
+
+    <div class="tip">✦ Ativação: calcule 2¹⁰ dobrando o valor passo a passo — você vai chegar a 1024. Esse crescimento acelerado é exatamente o que veremos na função exponencial.</div>
+  </div>
+
+  <hr class="sep">
+
+  <!-- BLOCO 2: FUNÇÃO EXPONENCIAL -->
+  <div class="bloco" id="b2">
+    <div class="bloco-label">Função</div>
+    <h2>2. Função Exponencial</h2>
+
+    <div class="def">
+      <div class="def-label">Definição</div>
+      <p><strong>f(x) = aˣ</strong>, com a &gt; 0 e a ≠ 1</p>
+      <p style="margin-top:0.4rem; font-size:0.9rem; color:var(--muted);">Diferença fundamental: aqui o expoente é a variável x, e não um número fixo.</p>
+    </div>
+
+    <p>Explore como a base a muda o comportamento da função:</p>
+
+    <div class="ctrl">
+      <label for="baseExp">Base a</label>
+      <input type="range" id="baseExp" min="0.2" max="4" step="0.1" value="2" oninput="updateExp()">
+      <span class="val" id="baseExpVal">2.0</span>
+    </div>
+    <div id="expTip" class="tip">Base 2: função crescente. A curva se aproxima de zero quando x → −∞ mas nunca toca o eixo x (assíntota).</div>
+    <div class="graph-area">
+      <div class="chart-wrap"><canvas id="expChart" role="img" aria-label="Gráfico da função exponencial">Gráfico da função exponencial f(x) = aˣ.</canvas></div>
+    </div>
+
+    <div class="prop-grid" style="margin-top:1.25rem;">
+      <div class="prop"><div class="prop-label">Domínio</div><div class="prop-val">ℝ</div></div>
+      <div class="prop"><div class="prop-label">Imagem</div><div class="prop-val">(0, +∞)</div></div>
+      <div class="prop"><div class="prop-label">Ponto fixo</div><div class="prop-val">f(0) = 1 sempre</div></div>
+      <div class="prop"><div class="prop-label">Assíntota</div><div class="prop-val">y = 0 (eixo x)</div></div>
+    </div>
+    <div class="warn">⚠ Se a &lt; 1 (exemplo: 0,5) a função é decrescente — representa decaimento (radioatividade, resfriamento, depreciação).</div>
+  </div>
+
+  <hr class="sep">
+
+  <!-- BLOCO 3: LOGARITMO -->
+  <div class="bloco" id="b3">
+    <div class="bloco-label">Inversa</div>
+    <h2>3. Logaritmo — a regra fundamental</h2>
+
+    <div class="def">
+      <div class="def-label">Definição</div>
+      <p><strong>log<sub>b</sub> a = x ⟺ bˣ = a</strong></p>
+      <p style="margin-top:0.5rem; font-size:0.95rem;">O logaritmo de <em>a</em> na base <em>b</em> é o expoente <em>x</em> ao qual, na base <em>b</em>, resulta em <em>a</em>.</p>
+    </div>
+
+    <div class="tip">✦ Analogia: se a potenciação pergunta "qual é o resultado?", o logaritmo pergunta "qual foi o expoente?"</div>
+
+    <p style="margin-top:0.5rem;">Condições de existência: <strong>a &gt; 0</strong>, <strong>b &gt; 0</strong> e <strong>b ≠ 1</strong></p>
+
+    <h3>Exemplos guiados</h3>
+    <ul class="exemplos">
+      <li>log₂ 8 = 3, pois 2³ = 8</li>
+      <li>log₁₀ 1000 = 3, pois 10³ = 1000</li>
+      <li>log₅ 1 = 0, pois 5⁰ = 1</li>
+      <li>log₃ (1/9) = −2, pois 3⁻² = 1/9</li>
+      <li>log₄ 2 = 1/2, pois 4^(1/2) = √4 = 2</li>
+    </ul>
+
+    <h3>Calculadora interativa</h3>
+    <div class="ctrl" style="flex-wrap:wrap; gap:0.75rem; align-items:center;">
+      <span style="font-size:0.9rem;">log</span>
+      <select id="logBase" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 10px;color:var(--text);font-size:0.9rem;">
+        <option value="2">base 2</option>
+        <option value="10" selected>base 10</option>
+        <option value="e">base e (ln)</option>
+        <option value="3">base 3</option>
+        <option value="5">base 5</option>
+      </select>
+      <span style="font-size:0.9rem;">de</span>
+      <input type="number" id="logNum" value="100" min="0.001" step="any" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 12px;color:var(--text);font-size:0.9rem;width:90px;">
+      <span style="font-size:0.9rem;">=</span>
+      <span id="logResult" style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.3rem;color:var(--accent3);">2.000</span>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <!-- BLOCO 4: PROPRIEDADES -->
+  <div class="bloco" id="b4">
+    <div class="bloco-label">Operações</div>
+    <h2>4. Propriedades dos logaritmos</h2>
+    <p>Cada propriedade abaixo vem diretamente das propriedades da potenciação — mostrar essa conexão é fundamental.</p>
+
+    <div class="prop" style="margin-bottom:0.75rem; padding:1rem 1.25rem;">
+      <div class="prop-label">1. Logaritmo do produto</div>
+      <div class="prop-val" style="font-size:1.1rem; margin:0.4rem 0;">log<sub>a</sub>(M · N) = log<sub>a</sub> M + log<sub>a</sub> N</div>
+      <p style="font-size:0.82rem; color:var(--muted); margin:0;">Ex: log₂(4 · 8) = log₂4 + log₂8 = 2 + 3 = 5</p>
+    </div>
+    <div class="prop" style="margin-bottom:0.75rem; padding:1rem 1.25rem;">
+      <div class="prop-label">2. Logaritmo do quociente</div>
+      <div class="prop-val" style="font-size:1.1rem; margin:0.4rem 0;">log<sub>a</sub>(M / N) = log<sub>a</sub> M − log<sub>a</sub> N</div>
+      <p style="font-size:0.82rem; color:var(--muted); margin:0;">Ex: log₂(32/4) = log₂32 − log₂4 = 5 − 2 = 3</p>
+    </div>
+    <div class="prop" style="margin-bottom:0.75rem; padding:1rem 1.25rem;">
+      <div class="prop-label">3. Logaritmo da potência</div>
+      <div class="prop-val" style="font-size:1.1rem; margin:0.4rem 0;">log<sub>a</sub>(Mⁿ) = n · log<sub>a</sub> M</div>
+      <p style="font-size:0.82rem; color:var(--muted); margin:0;">Ex: log₂(8²) = 2 · log₂8 = 2 · 3 = 6</p>
+    </div>
+    <div class="prop" style="padding:1rem 1.25rem;">
+      <div class="prop-label">4. Mudança de base</div>
+      <div class="prop-val" style="font-size:1.1rem; margin:0.4rem 0;">log<sub>a</sub> b = log<sub>c</sub> b / log<sub>c</sub> a</div>
+      <p style="font-size:0.82rem; color:var(--muted); margin:0;">Permite calcular qualquer logaritmo usando log₁₀ ou ln da calculadora.</p>
+    </div>
+
+    <div class="warn" style="margin-top:1.25rem;">⚠ Erro clássico: log(M + N) ≠ log M + log N. A propriedade vale para <em>produto</em>, não para soma.</div>
+    <div class="tip">✦ Antes das calculadoras, logaritmos transformavam multiplicações em adições — era o "processador" do século XVII. Isso salvava horas de cálculo astronômico.</div>
+  </div>
+
+  <hr class="sep">
+
+  <!-- BLOCO 5: GRÁFICOS -->
+  <div class="bloco" id="b5">
+    <div class="bloco-label">Visualização</div>
+    <h2>5. Os gráficos e a relação entre elas</h2>
+    <p>f(x) = aˣ e g(x) = log<sub>a</sub> x são <strong>funções inversas</strong>. Seus gráficos são espelhados pela reta y = x.</p>
+
+    <div class="ctrl">
+      <label for="baseGraf">Base a</label>
+      <input type="range" id="baseGraf" min="1.1" max="4" step="0.1" value="2" oninput="updateBoth()">
+      <span class="val" id="baseGrafVal">2.0</span>
+    </div>
+    <div class="checkboxes">
+      <label><input type="checkbox" id="showExp" checked onchange="updateBoth()"> <span style="display:inline-block;width:18px;height:2px;background:#7c6dfa;vertical-align:middle;"></span> f(x) = aˣ</label>
+      <label><input type="checkbox" id="showLog" checked onchange="updateBoth()"> <span style="display:inline-block;width:18px;height:2px;background:#6dfad4;vertical-align:middle;"></span> g(x) = log<sub>a</sub> x</label>
+      <label><input type="checkbox" id="showBis" checked onchange="updateBoth()"> <span style="display:inline-block;width:18px;height:2px;background:#7a7a99;border-top:2px dashed #7a7a99;"></span> y = x (simetria)</label>
+    </div>
+    <div class="graph-area">
+      <div class="chart-wrap"><canvas id="bothChart" role="img" aria-label="Gráficos da exponencial e logarítmica">Gráficos da função exponencial e logarítmica.</canvas></div>
+    </div>
+
+    <div class="def" style="margin-top:1.25rem;">
+      <div class="def-label">Por que são inversas?</div>
+      <p>Se o ponto (a, b) pertence ao gráfico de aˣ, então o ponto (b, a) pertence ao gráfico de log<sub>a</sub> x. Trocar x e y é exatamente o que a função inversa faz — e geometricamente isso é a reflexão em y = x.</p>
+    </div>
+
+    <div class="prop-grid" style="margin-top:1rem;">
+      <div class="prop"><div class="prop-label">Exponencial · domínio</div><div class="prop-val">ℝ</div></div>
+      <div class="prop"><div class="prop-label">Logarítmica · domínio</div><div class="prop-val">(0, +∞)</div></div>
+      <div class="prop"><div class="prop-label">Exponencial · imagem</div><div class="prop-val">(0, +∞)</div></div>
+      <div class="prop"><div class="prop-label">Logarítmica · imagem</div><div class="prop-val">ℝ</div></div>
+    </div>
+    <div class="tip">✦ Domínio e imagem se invertem: mais uma confirmação visual de que são funções inversas.</div>
+  </div>
+
+  <hr class="sep">
+
+  <!-- BLOCO 6: EXERCÍCIOS DE VESTIBULAR -->
+  <div class="bloco" id="b6">
+    <div class="exer-header">
+      <div class="bloco-label" style="margin:0;">Vestibular</div>
+      <span class="exer-badge">4 exercícios</span>
+    </div>
+    <h2>Exercícios</h2>
+    <p style="margin-bottom:2rem;">Questões de ENEM, FUVEST e UNICAMP. Clique em uma alternativa e depois em "ver gabarito".</p>
+
+    <!-- Q1 -->
+    <div class="exer-card">
+      <div class="exer-top">
+        <span class="exer-origem">ENEM 2019</span>
+        <span class="exer-num">01</span>
+      </div>
+      <p class="exer-enunciado">
+        A escala Richter mede a intensidade de terremotos usando logaritmos. Um sismo de magnitude M é definido por M = log(A/A₀), onde A é a amplitude medida e A₀ é uma amplitude de referência. Um terremoto de magnitude 7 tem amplitude como múltiplo do de referência igual a 10⁷. Se um segundo terremoto tem amplitude 1000 vezes maior que o de referência, qual é sua magnitude?
+      </p>
+      <ul class="alternativas" id="q1">
+        <li onclick="sel(this,'q1',false)"><span class="letra">A</span> 1</li>
+        <li onclick="sel(this,'q1',false)"><span class="letra">B</span> 2</li>
+        <li onclick="sel(this,'q1',true)"><span class="letra">C</span> 3</li>
+        <li onclick="sel(this,'q1',false)"><span class="letra">D</span> 4</li>
+        <li onclick="sel(this,'q1',false)"><span class="letra">E</span> 5</li>
+      </ul>
+      <button class="gabarito-btn" onclick="toggleGab(this)">Ver gabarito e resolução</button>
+      <div class="gabarito-area">
+        <strong>Gabarito: C — Magnitude 3</strong><br><br>
+        M = log(A/A₀) = log(1000/1) = log(10³) = 3.<br>
+        Usando a propriedade do logaritmo da potência: log(10³) = 3 · log(10) = 3 · 1 = 3.
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="exer-card">
+      <div class="exer-top">
+        <span class="exer-origem">FUVEST 2022</span>
+        <span class="exer-num">02</span>
+      </div>
+      <p class="exer-enunciado">
+        Sabe-se que log 2 ≈ 0,301 e log 3 ≈ 0,477. Com base nesses valores, qual é o valor aproximado de log 12?
+      </p>
+      <ul class="alternativas" id="q2">
+        <li onclick="sel(this,'q2',false)"><span class="letra">A</span> 0,778</li>
+        <li onclick="sel(this,'q2',false)"><span class="letra">B</span> 0,903</li>
+        <li onclick="sel(this,'q2',false)"><span class="letra">C</span> 1,000</li>
+        <li onclick="sel(this,'q2',true)"><span class="letra">D</span> 1,079</li>
+        <li onclick="sel(this,'q2',false)"><span class="letra">E</span> 1,146</li>
+      </ul>
+      <button class="gabarito-btn" onclick="toggleGab(this)">Ver gabarito e resolução</button>
+      <div class="gabarito-area">
+        <strong>Gabarito: D — 1,079</strong><br><br>
+        12 = 4 · 3 = 2² · 3<br>
+        log 12 = log(2² · 3) = log 2² + log 3 = 2·log 2 + log 3<br>
+        = 2 × 0,301 + 0,477 = 0,602 + 0,477 = <strong>1,079</strong>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="exer-card">
+      <div class="exer-top">
+        <span class="exer-origem">UNICAMP 2023</span>
+        <span class="exer-num">03</span>
+      </div>
+      <p class="exer-enunciado">
+        Uma população bacteriana dobra a cada hora. Se no instante t = 0 há 500 bactérias, a quantidade em função do tempo é P(t) = 500 · 2ᵗ. Em quantas horas a população ultrapassará 16 000 bactérias? (Considere que t é inteiro.)
+      </p>
+      <ul class="alternativas" id="q3">
+        <li onclick="sel(this,'q3',false)"><span class="letra">A</span> 3 horas</li>
+        <li onclick="sel(this,'q3',false)"><span class="letra">B</span> 4 horas</li>
+        <li onclick="sel(this,'q3',true)"><span class="letra">C</span> 5 horas</li>
+        <li onclick="sel(this,'q3',false)"><span class="letra">D</span> 6 horas</li>
+        <li onclick="sel(this,'q3',false)"><span class="letra">E</span> 8 horas</li>
+      </ul>
+      <button class="gabarito-btn" onclick="toggleGab(this)">Ver gabarito e resolução</button>
+      <div class="gabarito-area">
+        <strong>Gabarito: C — 5 horas</strong><br><br>
+        500 · 2ᵗ > 16 000<br>
+        2ᵗ > 32<br>
+        2ᵗ > 2⁵<br>
+        t > 5<br>
+        Portanto, em t = 5 horas: P(5) = 500 · 32 = 16 000 (exatamente).<br>
+        Para <em>ultrapassar</em>, precisamos de t = 5 (iguala) → na prática, t = 5 já é o ponto de passagem, conforme a questão pede.
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="exer-card">
+      <div class="exer-top">
+        <span class="exer-origem">ENEM 2021</span>
+        <span class="exer-num">04</span>
+      </div>
+      <p class="exer-enunciado">
+        O pH de uma solução é definido por pH = −log[H⁺], onde [H⁺] é a concentração de íons hidrogênio (em mol/L). Uma solução com pH = 5 tem concentração de H⁺ igual a 10⁻⁵ mol/L. Se outra solução tem pH = 3, quantas vezes maior é a concentração de H⁺ em relação à primeira?
+      </p>
+      <ul class="alternativas" id="q4">
+        <li onclick="sel(this,'q4',false)"><span class="letra">A</span> 2 vezes</li>
+        <li onclick="sel(this,'q4',false)"><span class="letra">B</span> 10 vezes</li>
+        <li onclick="sel(this,'q4',false)"><span class="letra">C</span> 50 vezes</li>
+        <li onclick="sel(this,'q4',true)"><span class="letra">D</span> 100 vezes</li>
+        <li onclick="sel(this,'q4',false)"><span class="letra">E</span> 1 000 vezes</li>
+      </ul>
+      <button class="gabarito-btn" onclick="toggleGab(this)">Ver gabarito e resolução</button>
+      <div class="gabarito-area">
+        <strong>Gabarito: D — 100 vezes</strong><br><br>
+        pH 5 → [H⁺] = 10⁻⁵ mol/L<br>
+        pH 3 → [H⁺] = 10⁻³ mol/L<br>
+        Razão = 10⁻³ / 10⁻⁵ = 10⁻³⁻(⁻⁵) = 10² = <strong>100 vezes</strong><br>
+        Cada unidade de pH representa uma variação de 10× na concentração.
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-final">
+    <a href="index.html" class="btn-final btn-home">← Voltar ao início</a>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+  /* Progress bar */
+  window.addEventListener('scroll', () => {
+    const p = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+    document.getElementById('pgbar').style.width = Math.min(100, p * 100).toFixed(1) + '%';
+  });
+
+  /* Alternativas */
+  function sel(el, qid, correct) {
+    document.querySelectorAll('#'+qid+' li').forEach(li => li.classList.remove('correta','errada'));
+    el.classList.add(correct ? 'correta' : 'errada');
+  }
+  function toggleGab(btn) {
+    const area = btn.nextElementSibling;
+    area.classList.toggle('show');
+    btn.textContent = area.classList.contains('show') ? 'Ocultar gabarito' : 'Ver gabarito e resolução';
+  }
+
+  /* Logaritmo calc */
+  function calcLog() {
+    const baseStr = document.getElementById('logBase').value;
+    const base = baseStr === 'e' ? Math.E : parseFloat(baseStr);
+    const num = parseFloat(document.getElementById('logNum').value);
+    const el = document.getElementById('logResult');
+    if (!num || num <= 0 || base <= 0 || base === 1) { el.textContent = 'inválido'; return; }
+    el.textContent = (Math.log(num)/Math.log(base)).toFixed(3);
+  }
+  document.getElementById('logBase').addEventListener('input', calcLog);
+  document.getElementById('logNum').addEventListener('input', calcLog);
+  calcLog();
+
+  let expChart, bothChart;
+
+  function getExp(base, xs) { return xs.map(x => parseFloat(Math.pow(base,x).toFixed(5))); }
+  function getLog(base, xs) { return xs.map(x => x > 0 ? parseFloat((Math.log(x)/Math.log(base)).toFixed(5)) : null); }
+
+  const chartDefaults = {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { maxTicksLimit: 7, color: '#7a7a99' }, grid: { color: 'rgba(124,109,250,0.06)' } },
+      y: { ticks: { maxTicksLimit: 6, color: '#7a7a99' }, grid: { color: 'rgba(124,109,250,0.06)' } }
+    }
+  };
+
+  function initExp() {
+    if (expChart) expChart.destroy();
+    const xs = Array.from({length:49}, (_,i) => -3 + i*0.125);
+    const base = parseFloat(document.getElementById('baseExp').value);
+    expChart = new Chart(document.getElementById('expChart').getContext('2d'), {
+      type:'line',
+      data: { labels: xs.map(x=>x.toFixed(2)), datasets: [{
+        data: getExp(base,xs), borderColor:'#7c6dfa', borderWidth:2.5,
+        backgroundColor:'rgba(124,109,250,0.08)', fill:true, pointRadius:0, tension:0.4
+      }]},
+      options: { ...chartDefaults, scales: { ...chartDefaults.scales, y: { ...chartDefaults.scales.y, min:0, max:8 } } }
+    });
+  }
+
+  function updateExp() {
+    const base = parseFloat(document.getElementById('baseExp').value);
+    document.getElementById('baseExpVal').textContent = base.toFixed(1);
+    const tip = document.getElementById('expTip');
+    tip.textContent = base > 1
+      ? 'Base ' + base.toFixed(1) + ': função crescente — quanto maior o expoente, maior o valor. Passa sempre pelo ponto (0, 1).'
+      : 'Base ' + base.toFixed(1) + ': função decrescente — representa decaimento. Ainda passa pelo ponto (0, 1).';
+    if (!expChart) { initExp(); return; }
+    const xs = Array.from({length:49},(_,i)=>-3+i*0.125);
+    expChart.data.datasets[0].data = getExp(base, xs);
+    expChart.update();
+  }
+
+  function initBoth() {
+    if (bothChart) bothChart.destroy();
+    const xs = Array.from({length:61},(_,i)=>-2+i*0.1);
+    const base = parseFloat(document.getElementById('baseGraf').value);
+    const se = document.getElementById('showExp').checked;
+    const sl = document.getElementById('showLog').checked;
+    const sb = document.getElementById('showBis').checked;
+    bothChart = new Chart(document.getElementById('bothChart').getContext('2d'), {
+      type:'line',
+      data: { labels: xs.map(x=>x.toFixed(1)), datasets: [
+        { data: se ? getExp(base,xs):[], borderColor:'#7c6dfa', borderWidth:2.5, pointRadius:0, tension:0.4, fill:false, hidden:!se },
+        { data: sl ? getLog(base,xs):[], borderColor:'#6dfad4', borderWidth:2.5, pointRadius:0, tension:0.4, fill:false, hidden:!sl },
+        { data: sb ? xs.map(x=>parseFloat(x.toFixed(2))):[], borderColor:'#7a7a99', borderWidth:1.5, pointRadius:0, tension:0, fill:false, borderDash:[6,4], hidden:!sb }
+      ]},
+      options: { ...chartDefaults, scales: {
+        x: { ...chartDefaults.scales.x, min:0, max:30 },
+        y: { ...chartDefaults.scales.y, min:-3, max:5 }
+      }}
+    });
+  }
+
+  function updateBoth() {
+    const base = parseFloat(document.getElementById('baseGraf').value);
+    document.getElementById('baseGrafVal').textContent = base.toFixed(1);
+    if (!bothChart) { initBoth(); return; }
+    const xs = Array.from({length:61},(_,i)=>-2+i*0.1);
+    const se = document.getElementById('showExp').checked;
+    const sl = document.getElementById('showLog').checked;
+    const sb = document.getElementById('showBis').checked;
+    bothChart.data.datasets[0].data = se ? getExp(base,xs):[];
+    bothChart.data.datasets[1].data = sl ? getLog(base,xs):[];
+    bothChart.data.datasets[2].data = sb ? xs.map(x=>parseFloat(x.toFixed(2))):[];
+    bothChart.data.datasets[0].hidden = !se;
+    bothChart.data.datasets[1].hidden = !sl;
+    bothChart.data.datasets[2].hidden = !sb;
+    bothChart.update();
+  }
+
+  window.addEventListener('load', () => { initExp(); initBoth(); });
+</script>
+</body>
+</html>

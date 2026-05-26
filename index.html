@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Befama — Matemática que faz sentido</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #1a1a24;
+    --accent: #7c6dfa;
+    --accent2: #fa6d8c;
+    --accent3: #6dfad4;
+    --text: #f0f0f8;
+    --muted: #7a7a99;
+    --border: rgba(124,109,250,0.15);
+    --card-bg: rgba(26,26,36,0.8);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* BACKGROUND GRID */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(124,109,250,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,109,250,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* GLOW ORBS */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.25;
+  }
+  .orb1 { width: 500px; height: 500px; background: var(--accent); top: -150px; right: -150px; }
+  .orb2 { width: 400px; height: 400px; background: var(--accent2); bottom: -100px; left: -100px; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.2rem 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(10,10,15,0.8);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2rem; align-items: center; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none; font-size: 0.9rem;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-drive {
+    background: rgba(124,109,250,0.12);
+    border: 1px solid var(--border);
+    color: var(--accent) !important;
+    padding: 0.4rem 1rem;
+    border-radius: 100px;
+    font-size: 0.85rem !important;
+    transition: background 0.2s !important;
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+  .nav-drive:hover { background: rgba(124,109,250,0.22) !important; color: var(--text) !important; }
+
+  /* HERO */
+  .hero {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 8rem 2rem 4rem;
+  }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(124,109,250,0.1);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 0.35rem 1rem;
+    font-size: 0.8rem;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-tag .dot { width: 6px; height: 6px; background: var(--accent3); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  h1 .line2 {
+    display: block;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    font-size: 1.1rem; color: var(--muted); max-width: 480px;
+    margin: 1.5rem auto 3rem;
+    line-height: 1.6;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.85rem 2rem;
+    border-radius: 100px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 40px rgba(124,109,250,0.3);
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+  .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 50px rgba(124,109,250,0.45); }
+  .arrow { transition: transform 0.2s; }
+  .hero-cta:hover .arrow { transform: translateX(4px); }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(20px); }
+    to { opacity:1; transform: translateY(0); }
+  }
+
+  /* SCROLL INDICATOR */
+  .scroll-hint {
+    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    color: var(--muted); font-size: 0.75rem;
+    animation: fadeUp 1s 0.8s ease both;
+  }
+  .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--accent), transparent); }
+
+  /* AULAS SECTION */
+  section {
+    position: relative; z-index: 1;
+    padding: 5rem 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.5rem;
+  }
+  .section-sub {
+    color: var(--muted); font-size: 1rem; margin-bottom: 3rem; max-width: 500px;
+  }
+
+  /* CARDS GRID */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .aula-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 1.75rem;
+    text-decoration: none;
+    color: var(--text);
+    display: flex; flex-direction: column; gap: 1rem;
+    transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+  }
+  .aula-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(124,109,250,0.06), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+  .aula-card:hover { border-color: rgba(124,109,250,0.5); transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+  .aula-card:hover::before { opacity: 1; }
+
+  .card-chip {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 0.3rem 0.75rem;
+    border-radius: 100px;
+    font-weight: 500;
+  }
+  .chip-disponivel { background: rgba(109,250,212,0.12); color: var(--accent3); border: 1px solid rgba(109,250,212,0.2); }
+  .chip-breve { background: rgba(122,122,153,0.12); color: var(--muted); border: 1px solid rgba(122,122,153,0.2); }
+
+  .card-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: rgba(124,109,250,0.15);
+    line-height: 1;
+    position: absolute; right: 1.5rem; top: 1.25rem;
+  }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .card-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+
+  .card-footer {
+    margin-top: auto;
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+    font-size: 0.8rem; color: var(--muted);
+  }
+  .card-link {
+    display: flex; align-items: center; gap: 0.4rem;
+    color: var(--accent); font-weight: 500; font-size: 0.85rem;
+  }
+  .aula-card.locked .card-link { color: var(--muted); }
+  .aula-card.locked { cursor: default; }
+  .aula-card.locked:hover { transform: none; box-shadow: none; border-color: var(--border); }
+
+  /* FOOTER */
+  footer {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 3rem 2rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  footer strong { color: var(--accent); }
+
+  /* DRIVE SECTION */
+  .drive-banner {
+    position: relative; z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem 5rem;
+  }
+  .drive-card {
+    background: linear-gradient(135deg, rgba(124,109,250,0.12), rgba(250,109,140,0.08));
+    border: 1px solid rgba(124,109,250,0.25);
+    border-radius: 24px;
+    padding: 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .drive-text h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem; font-weight: 700;
+    letter-spacing: -0.03em; margin-bottom: 0.5rem;
+  }
+  .drive-text p { color: var(--muted); font-size: 0.95rem; }
+  .drive-btn {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--text);
+    padding: 0.75rem 1.75rem;
+    border-radius: 100px;
+    text-decoration: none;
+    font-size: 0.9rem; font-weight: 500;
+    transition: background 0.2s, transform 0.2s;
+    white-space: nowrap;
+  }
+  .drive-btn:hover { background: rgba(255,255,255,0.12); transform: translateY(-2px); }
+</style>
+</head>
+<body>
+
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<nav>
+  <a href="/" class="logo">befama</a>
+  <div class="nav-links">
+    <a href="#aulas">Aulas</a>
+    <a href="#materiais">Materiais</a>
+    <a href="DRIVE_LINK_AQUI" target="_blank" class="nav-drive">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Drive da turma
+    </a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">
+    <span class="dot"></span>
+    3º Ano · Ensino Médio
+  </div>
+  <h1>
+    Matemática<br>
+    <span class="line2">que faz sentido.</span>
+  </h1>
+  <p class="hero-sub">Aulas do Befama organizadas pra você estudar no seu ritmo, quando quiser.</p>
+  <a href="#aulas" class="hero-cta">
+    Ver as aulas
+    <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+  </a>
+  <div class="scroll-hint">
+    <span>rolar</span>
+    <div class="scroll-line"></div>
+  </div>
+</div>
+
+<section id="aulas">
+  <div class="section-label">Conteúdo</div>
+  <div class="section-title">Aulas</div>
+  <p class="section-sub">Clique em uma aula disponível para estudar com exemplos interativos e exercícios.</p>
+
+  <div class="cards-grid">
+
+    <a href="aula-01.html" class="aula-card">
+      <div class="card-number">01</div>
+      <div><span class="card-chip chip-disponivel">✦ Disponível</span></div>
+      <div>
+        <div class="card-title">Funções Exponencial e Logarítmica</div>
+        <div class="card-desc">Potenciação, regra do logaritmo, propriedades, gráficos e a relação entre as funções. Com exercícios de ENEM e vestibulares.</div>
+      </div>
+      <div class="card-footer">
+        <span>50 min · 4 exercícios</span>
+        <span class="card-link">Estudar →</span>
+      </div>
+    </a>
+
+    <div class="aula-card locked">
+      <div class="card-number">02</div>
+      <div><span class="card-chip chip-breve">Em breve</span></div>
+      <div>
+        <div class="card-title">Progressões Aritméticas e Geométricas</div>
+        <div class="card-desc">PA, PG, fórmulas do termo geral e das somas. Aplicações em juros e sequências.</div>
+      </div>
+      <div class="card-footer">
+        <span>Próxima aula</span>
+        <span class="card-link">—</span>
+      </div>
+    </div>
+
+    <div class="aula-card locked">
+      <div class="card-number">03</div>
+      <div><span class="card-chip chip-breve">Em breve</span></div>
+      <div>
+        <div class="card-title">Trigonometria</div>
+        <div class="card-desc">Razões trigonométricas, círculo trigonométrico, seno, cosseno e tangente.</div>
+      </div>
+      <div class="card-footer">
+        <span>Em breve</span>
+        <span class="card-link">—</span>
+      </div>
+    </div>
+
+    <div class="aula-card locked">
+      <div class="card-number">04</div>
+      <div><span class="card-chip chip-breve">Em breve</span></div>
+      <div>
+        <div class="card-title">Geometria Plana</div>
+        <div class="card-desc">Áreas e perímetros das principais figuras planas. Teorema de Pitágoras e aplicações.</div>
+      </div>
+      <div class="card-footer">
+        <span>Em breve</span>
+        <span class="card-link">—</span>
+      </div>
+    </div>
+
+    <div class="aula-card locked">
+      <div class="card-number">05</div>
+      <div><span class="card-chip chip-breve">Em breve</span></div>
+      <div>
+        <div class="card-title">Probabilidade e Estatística</div>
+        <div class="card-desc">Espaço amostral, eventos, combinatória e noções de estatística descritiva.</div>
+      </div>
+      <div class="card-footer">
+        <span>Em breve</span>
+        <span class="card-link">—</span>
+      </div>
+    </div>
+
+    <div class="aula-card locked">
+      <div class="card-number">06</div>
+      <div><span class="card-chip chip-breve">Em breve</span></div>
+      <div>
+        <div class="card-title">Geometria Espacial</div>
+        <div class="card-desc">Volumes e áreas de poliedros e corpos redondos. Prismas, pirâmides, cilindros e esferas.</div>
+      </div>
+      <div class="card-footer">
+        <span>Em breve</span>
+        <span class="card-link">—</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="drive-banner" id="materiais">
+  <div class="drive-card">
+    <div class="drive-text">
+      <h3>Material de apoio</h3>
+      <p>Listas, resumos e arquivos da turma estão no Drive. Acesse com o e-mail da escola.</p>
+    </div>
+    <a href="DRIVE_LINK_AQUI" target="_blank" class="drive-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Acessar o Drive da turma
+    </a>
+  </div>
+</div>
+
+<footer>
+  <p>Feito com ♥ para o <strong>Befama</strong> · 3º Ano do Ensino Médio</p>
+</footer>
+
+</body>
+</html>
